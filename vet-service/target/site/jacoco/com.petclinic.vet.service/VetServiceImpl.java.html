@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VetServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">vet-service</a> &gt; <a href="index.source.html" class="el_package">com.petclinic.vet.service</a> &gt; <span class="el_source">VetServiceImpl.java</span></div><h1>VetServiceImpl.java</h1><pre class="source lang-java linenums">package com.petclinic.vet.service;
+
+import com.petclinic.vet.dto.SpecialtyDto;
+import com.petclinic.vet.dto.VetDto;
+import com.petclinic.vet.entity.Specialty;
+import com.petclinic.vet.entity.Vet;
+import com.petclinic.vet.exception.ResourceNotFoundException;
+import com.petclinic.vet.mapper.VetMapper;
+import com.petclinic.vet.repository.SpecialtyRepository;
+import com.petclinic.vet.repository.VetRepository;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class VetServiceImpl implements VetService {
+
+    private final VetRepository vetRepository;
+    private final SpecialtyRepository specialtyRepository;
+    private final VetMapper vetMapper;
+
+    public VetServiceImpl(VetRepository vetRepository,
+                          SpecialtyRepository specialtyRepository,
+<span class="fc" id="L27">                          VetMapper vetMapper) {</span>
+<span class="fc" id="L28">        this.vetRepository = vetRepository;</span>
+<span class="fc" id="L29">        this.specialtyRepository = specialtyRepository;</span>
+<span class="fc" id="L30">        this.vetMapper = vetMapper;</span>
+<span class="fc" id="L31">    }</span>
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;VetDto&gt; findAll() {
+<span class="fc" id="L36">        return vetMapper.toDtoList(vetRepository.findAll());</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public VetDto findById(Integer id) {
+<span class="fc" id="L42">        Vet vet = vetRepository.findById(id)</span>
+<span class="fc" id="L43">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet&quot;, id));</span>
+<span class="fc" id="L44">        return vetMapper.toDto(vet);</span>
+    }
+
+    @Override
+    public VetDto create(VetDto dto) {
+<span class="fc" id="L49">        Vet vet = vetMapper.toEntity(dto);</span>
+<span class="fc" id="L50">        vet.setSpecialties(resolveSpecialties(dto.getSpecialties()));</span>
+<span class="fc" id="L51">        Vet saved = vetRepository.save(vet);</span>
+<span class="fc" id="L52">        return vetMapper.toDto(saved);</span>
+    }
+
+    @Override
+    public VetDto update(Integer id, VetDto dto) {
+<span class="fc" id="L57">        Vet existing = vetRepository.findById(id)</span>
+<span class="fc" id="L58">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet&quot;, id));</span>
+<span class="fc" id="L59">        existing.setFirstName(dto.getFirstName());</span>
+<span class="fc" id="L60">        existing.setLastName(dto.getLastName());</span>
+<span class="fc" id="L61">        existing.setSpecialties(resolveSpecialties(dto.getSpecialties()));</span>
+<span class="fc" id="L62">        Vet saved = vetRepository.save(existing);</span>
+<span class="fc" id="L63">        return vetMapper.toDto(saved);</span>
+    }
+
+    @Override
+    public void delete(Integer id) {
+<span class="fc" id="L68">        Vet existing = vetRepository.findById(id)</span>
+<span class="fc" id="L69">                .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet&quot;, id));</span>
+<span class="fc" id="L70">        vetRepository.delete(existing);</span>
+<span class="fc" id="L71">    }</span>
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;VetDto&gt; findBySpecialtyId(Integer specialtyId) {
+<span class="fc" id="L76">        return vetMapper.toDtoList(vetRepository.findBySpecialtyId(specialtyId));</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List&lt;VetDto&gt; findByLastName(String lastName) {
+<span class="fc" id="L82">        return vetMapper.toDtoList(vetRepository.findByLastNameContainingIgnoreCase(lastName));</span>
+    }
+
+    private Set&lt;Specialty&gt; resolveSpecialties(List&lt;SpecialtyDto&gt; specialtyDtos) {
+<span class="fc" id="L86">        Set&lt;Specialty&gt; specialties = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (specialtyDtos != null) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            for (SpecialtyDto dto : specialtyDtos) {</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">                if (dto.getId() != null) {</span>
+<span class="fc" id="L90">                    Specialty specialty = specialtyRepository.findById(dto.getId())</span>
+<span class="fc" id="L91">                            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, dto.getId()));</span>
+<span class="fc" id="L92">                    specialties.add(specialty);</span>
+                }
+<span class="fc" id="L94">            }</span>
+        }
+<span class="fc" id="L96">        return specialties;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

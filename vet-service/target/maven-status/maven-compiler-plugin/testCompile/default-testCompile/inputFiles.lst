@@ -1,0 +1,12 @@
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/VetServiceApplicationTests.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/controller/SpecialtyControllerTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/controller/VetControllerTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/dto/DtoTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/entity/EntityTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/exception/GlobalExceptionHandlerTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/exception/ResourceNotFoundExceptionTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/mapper/VetMapperTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/repository/SpecialtyRepositoryTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/repository/VetRepositoryTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/service/SpecialtyServiceImplTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/service/VetServiceImplTest.java

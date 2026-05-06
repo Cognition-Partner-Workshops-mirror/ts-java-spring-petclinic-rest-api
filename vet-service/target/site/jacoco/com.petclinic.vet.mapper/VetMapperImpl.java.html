@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VetMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">vet-service</a> &gt; <a href="index.source.html" class="el_package">com.petclinic.vet.mapper</a> &gt; <span class="el_source">VetMapperImpl.java</span></div><h1>VetMapperImpl.java</h1><pre class="source lang-java linenums">package com.petclinic.vet.mapper;
+
+import com.petclinic.vet.dto.VetDto;
+import com.petclinic.vet.entity.Vet;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-05-06T17:49:37+0000&quot;,
+    comments = &quot;version: 1.6.3, compiler: javac, environment: Java 17.0.13 (Ubuntu)&quot;
+)
+@Component
+<span class="fc" id="L16">public class VetMapperImpl implements VetMapper {</span>
+
+    @Override
+    public VetDto toDto(Vet entity) {
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if ( entity == null ) {</span>
+<span class="nc" id="L21">            return null;</span>
+        }
+
+<span class="fc" id="L24">        VetDto vetDto = new VetDto();</span>
+
+<span class="fc" id="L26">        vetDto.setId( entity.getId() );</span>
+<span class="fc" id="L27">        vetDto.setFirstName( entity.getFirstName() );</span>
+<span class="fc" id="L28">        vetDto.setLastName( entity.getLastName() );</span>
+
+<span class="fc" id="L30">        vetDto.setSpecialties( specialtySetToList(entity.getSpecialties()) );</span>
+
+<span class="fc" id="L32">        return vetDto;</span>
+    }
+
+    @Override
+    public List&lt;VetDto&gt; toDtoList(List&lt;Vet&gt; entities) {
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if ( entities == null ) {</span>
+<span class="nc" id="L38">            return null;</span>
+        }
+
+<span class="fc" id="L41">        List&lt;VetDto&gt; list = new ArrayList&lt;VetDto&gt;( entities.size() );</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for ( Vet vet : entities ) {</span>
+<span class="fc" id="L43">            list.add( toDto( vet ) );</span>
+<span class="fc" id="L44">        }</span>
+
+<span class="fc" id="L46">        return list;</span>
+    }
+
+    @Override
+    public Vet toEntity(VetDto dto) {
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if ( dto == null ) {</span>
+<span class="nc" id="L52">            return null;</span>
+        }
+
+<span class="fc" id="L55">        Vet vet = new Vet();</span>
+
+<span class="fc" id="L57">        vet.setFirstName( dto.getFirstName() );</span>
+<span class="fc" id="L58">        vet.setLastName( dto.getLastName() );</span>
+
+<span class="fc" id="L60">        return vet;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
