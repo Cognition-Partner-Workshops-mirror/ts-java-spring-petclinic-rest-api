@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.petclinic.vet.mapper.VetMapperTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.14 s -- in com.petclinic.vet.mapper.VetMapperTest
