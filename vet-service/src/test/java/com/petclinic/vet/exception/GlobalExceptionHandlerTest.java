@@ -44,7 +44,7 @@ class GlobalExceptionHandlerTest {
         ProblemDetail result = handler.handleGenericException(ex, request);
 
         assertThat(result.getStatus()).isEqualTo(500);
-        assertThat(result.getTitle()).isEqualTo("RuntimeException");
-        assertThat(result.getDetail()).isEqualTo("Something went wrong");
+        assertThat(result.getTitle()).isEqualTo("Internal Server Error");
+        assertThat(result.getDetail()).isEqualTo("An unexpected error occurred");
     }
 }

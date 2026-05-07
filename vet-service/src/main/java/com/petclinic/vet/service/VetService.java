@@ -1,6 +1,5 @@
 package com.petclinic.vet.service;
 
-import com.petclinic.vet.dto.SpecialtyResponseDto;
 import com.petclinic.vet.dto.VetRequestDto;
 import com.petclinic.vet.dto.VetResponseDto;
 import com.petclinic.vet.entity.Specialty;
@@ -44,7 +43,7 @@ public class VetService {
 
     public VetResponseDto addVet(VetRequestDto dto) {
         Vet vet = vetMapper.toEntity(dto);
-        vet.setSpecialties(resolveSpecialties(dto.specialties()));
+        vet.setSpecialties(resolveSpecialties(dto.specialtyIds()));
         vet = vetRepository.save(vet);
         return vetMapper.toResponseDto(vet);
     }
@@ -54,7 +53,7 @@ public class VetService {
             .orElseThrow(() -> new ResourceNotFoundException("Vet", id));
         vet.setFirstName(dto.firstName());
         vet.setLastName(dto.lastName());
-        vet.setSpecialties(resolveSpecialties(dto.specialties()));
+        vet.setSpecialties(resolveSpecialties(dto.specialtyIds()));
         vet = vetRepository.save(vet);
         return vetMapper.toResponseDto(vet);
     }
@@ -81,14 +80,14 @@ public class VetService {
         return vetMapper.toResponseDtoList(vetRepository.findBySpecialtyName(specialtyName));
     }
 
-    private Set<Specialty> resolveSpecialties(List<SpecialtyResponseDto> specialtyDtos) {
-        if (specialtyDtos == null || specialtyDtos.isEmpty()) {
+    private Set<Specialty> resolveSpecialties(List<Integer> specialtyIds) {
+        if (specialtyIds == null || specialtyIds.isEmpty()) {
             return new LinkedHashSet<>();
         }
         Set<Specialty> specialties = new LinkedHashSet<>();
-        for (SpecialtyResponseDto dto : specialtyDtos) {
-            Specialty specialty = specialtyRepository.findById(dto.id())
-                .orElseThrow(() -> new ResourceNotFoundException("Specialty", dto.id()));
+        for (Integer specialtyId : specialtyIds) {
+            Specialty specialty = specialtyRepository.findById(specialtyId)
+                .orElseThrow(() -> new ResourceNotFoundException("Specialty", specialtyId));
             specialties.add(specialty);
         }
         return specialties;

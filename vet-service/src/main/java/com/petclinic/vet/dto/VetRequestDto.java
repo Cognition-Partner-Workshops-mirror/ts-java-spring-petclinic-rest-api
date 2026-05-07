@@ -19,6 +19,6 @@ public record VetRequestDto(
     String lastName,
 
     @NotNull
-    List<SpecialtyResponseDto> specialties
+    List<Integer> specialtyIds
 ) {
 }

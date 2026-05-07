@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Not Found");
-        problem.setType(URI.create(request.getRequestURL().toString()));
+        problem.setInstance(URI.create(request.getRequestURL().toString()));
         problem.setProperty("timestamp", Instant.now());
         problem.setProperty("schemaValidationErrors", List.of());
         return problem;
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
 
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation failed");
         problem.setTitle("Bad Request");
-        problem.setType(URI.create(request.getRequestURL().toString()));
+        problem.setInstance(URI.create(request.getRequestURL().toString()));
         problem.setProperty("timestamp", Instant.now());
         problem.setProperty("schemaValidationErrors", validationErrors);
         return problem;
@@ -41,9 +41,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGenericException(Exception ex, HttpServletRequest request) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
-        problem.setTitle(ex.getClass().getSimpleName());
-        problem.setType(URI.create(request.getRequestURL().toString()));
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        problem.setTitle("Internal Server Error");
+        problem.setInstance(URI.create(request.getRequestURL().toString()));
         problem.setProperty("timestamp", Instant.now());
         problem.setProperty("schemaValidationErrors", List.of());
         return problem;

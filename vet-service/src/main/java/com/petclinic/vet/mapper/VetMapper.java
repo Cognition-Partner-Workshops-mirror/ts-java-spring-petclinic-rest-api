@@ -9,7 +9,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,19 +33,5 @@ public interface VetMapper {
         return specialties.stream()
             .map(s -> new SpecialtyResponseDto(s.getId(), s.getName()))
             .toList();
-    }
-
-    default Set<Specialty> specialtyDtoListToSet(List<SpecialtyResponseDto> dtos) {
-        if (dtos == null) {
-            return new LinkedHashSet<>();
-        }
-        Set<Specialty> set = new LinkedHashSet<>();
-        for (SpecialtyResponseDto dto : dtos) {
-            Specialty s = new Specialty();
-            s.setId(dto.id());
-            s.setName(dto.name());
-            set.add(s);
-        }
-        return set;
     }
 }

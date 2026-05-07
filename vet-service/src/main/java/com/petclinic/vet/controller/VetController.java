@@ -4,6 +4,7 @@ import com.petclinic.vet.dto.VetRequestDto;
 import com.petclinic.vet.dto.VetResponseDto;
 import com.petclinic.vet.service.VetService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,7 @@ public class VetController {
 
     @PostMapping
     public ResponseEntity<VetResponseDto> addVet(@Valid @RequestBody VetRequestDto dto) {
-        return ResponseEntity.ok(vetService.addVet(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(vetService.addVet(dto));
     }
 
     @PutMapping("/{vetId}")

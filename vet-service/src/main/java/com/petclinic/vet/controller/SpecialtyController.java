@@ -4,6 +4,7 @@ import com.petclinic.vet.dto.SpecialtyRequestDto;
 import com.petclinic.vet.dto.SpecialtyResponseDto;
 import com.petclinic.vet.service.SpecialtyService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,7 @@ public class SpecialtyController {
 
     @PostMapping
     public ResponseEntity<SpecialtyResponseDto> addSpecialty(@Valid @RequestBody SpecialtyRequestDto dto) {
-        return ResponseEntity.ok(specialtyService.addSpecialty(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(specialtyService.addSpecialty(dto));
     }
 
     @PutMapping("/{specialtyId}")

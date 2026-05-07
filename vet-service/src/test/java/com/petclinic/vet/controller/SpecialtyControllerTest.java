@@ -84,7 +84,7 @@ class SpecialtyControllerTest {
         mockMvc.perform(post("/api/specialties")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\": \"radiology\"}"))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andExpect(jsonPath("$.name").value("radiology"));
     }
 

@@ -109,17 +109,17 @@ class VetControllerTest {
     void addVet_returnsOk() throws Exception {
         when(vetService.addVet(any(VetRequestDto.class))).thenReturn(vetDto);
 
-        String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\", \"specialties\": [{\"id\": 1, \"name\": \"radiology\"}]}";
+        String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\", \"specialtyIds\": [1]}";
         mockMvc.perform(post("/api/vets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andExpect(jsonPath("$.firstName").value("James"));
     }
 
     @Test
     void addVet_returnsBadRequestForMissingFirstName() throws Exception {
-        String body = "{\"lastName\": \"Carter\", \"specialties\": []}";
+        String body = "{\"lastName\": \"Carter\", \"specialtyIds\": []}";
         mockMvc.perform(post("/api/vets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
@@ -128,7 +128,7 @@ class VetControllerTest {
 
     @Test
     void addVet_returnsBadRequestForMissingLastName() throws Exception {
-        String body = "{\"firstName\": \"James\", \"specialties\": []}";
+        String body = "{\"firstName\": \"James\", \"specialtyIds\": []}";
         mockMvc.perform(post("/api/vets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
@@ -136,7 +136,7 @@ class VetControllerTest {
     }
 
     @Test
-    void addVet_returnsBadRequestForMissingSpecialties() throws Exception {
+    void addVet_returnsBadRequestForMissingSpecialtyIds() throws Exception {
         String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\"}";
         mockMvc.perform(post("/api/vets")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -146,7 +146,7 @@ class VetControllerTest {
 
     @Test
     void addVet_returnsBadRequestForInvalidFirstName() throws Exception {
-        String body = "{\"firstName\": \"123\", \"lastName\": \"Carter\", \"specialties\": []}";
+        String body = "{\"firstName\": \"123\", \"lastName\": \"Carter\", \"specialtyIds\": []}";
         mockMvc.perform(post("/api/vets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
@@ -157,7 +157,7 @@ class VetControllerTest {
     void updateVet_returnsOk() throws Exception {
         when(vetService.updateVet(eq(1), any(VetRequestDto.class))).thenReturn(vetDto);
 
-        String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\", \"specialties\": [{\"id\": 1, \"name\": \"radiology\"}]}";
+        String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\", \"specialtyIds\": [1]}";
         mockMvc.perform(put("/api/vets/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))
@@ -170,7 +170,7 @@ class VetControllerTest {
         when(vetService.updateVet(eq(999), any(VetRequestDto.class)))
             .thenThrow(new ResourceNotFoundException("Vet", 999));
 
-        String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\", \"specialties\": []}";
+        String body = "{\"firstName\": \"James\", \"lastName\": \"Carter\", \"specialtyIds\": []}";
         mockMvc.perform(put("/api/vets/999")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body))

@@ -1,6 +1,5 @@
 package com.petclinic.vet.service;
 
-import com.petclinic.vet.dto.SpecialtyResponseDto;
 import com.petclinic.vet.dto.VetRequestDto;
 import com.petclinic.vet.dto.VetResponseDto;
 import com.petclinic.vet.entity.Specialty;
@@ -46,17 +45,14 @@ class VetServiceTest {
     private Specialty specialty;
     private VetResponseDto vetResponseDto;
     private VetRequestDto vetRequestDto;
-    private SpecialtyResponseDto specialtyResponseDto;
-
     @BeforeEach
     void setUp() {
         specialty = new Specialty(1, "radiology");
         vet = new Vet(1, "James", "Carter");
         vet.setSpecialties(Set.of(specialty));
 
-        specialtyResponseDto = new SpecialtyResponseDto(1, "radiology");
-        vetResponseDto = new VetResponseDto(1, "James", "Carter", List.of(specialtyResponseDto));
-        vetRequestDto = new VetRequestDto("James", "Carter", List.of(specialtyResponseDto));
+        vetResponseDto = new VetResponseDto(1, "James", "Carter", List.of(new com.petclinic.vet.dto.SpecialtyResponseDto(1, "radiology")));
+        vetRequestDto = new VetRequestDto("James", "Carter", List.of(1));
     }
 
     @Test

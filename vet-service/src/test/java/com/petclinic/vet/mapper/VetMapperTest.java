@@ -67,22 +67,6 @@ class VetMapperTest {
     }
 
     @Test
-    void specialtyDtoListToSet_mapsCorrectly() {
-        List<SpecialtyResponseDto> dtos = List.of(new SpecialtyResponseDto(1, "radiology"));
-
-        Set<Specialty> specialties = mapper.specialtyDtoListToSet(dtos);
-
-        assertThat(specialties).hasSize(1);
-    }
-
-    @Test
-    void specialtyDtoListToSet_handlesNull() {
-        Set<Specialty> specialties = mapper.specialtyDtoListToSet(null);
-
-        assertThat(specialties).isEmpty();
-    }
-
-    @Test
     void specialtySetToList_handlesNull() {
         List<SpecialtyResponseDto> result = mapper.specialtySetToList(null);
 
