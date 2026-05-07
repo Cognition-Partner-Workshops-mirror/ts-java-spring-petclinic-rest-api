@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneral(Exception ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-            HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+            HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred. Please try again later.");
         problem.setTitle("Internal Server Error");
         problem.setProperty("timestamp", Instant.now());
         return problem;
