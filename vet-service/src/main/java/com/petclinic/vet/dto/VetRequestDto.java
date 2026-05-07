@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+/** Request DTO for creating/updating a vet. Validated with Bean Validation annotations. */
 public record VetRequestDto(
     @NotBlank(message = "First name is required")
     @Size(min = 1, max = 30, message = "First name must be between 1 and 30 characters")

@@ -11,9 +11,14 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Centralized exception handler producing RFC 7807 ProblemDetail responses.
+ * All error payloads include a timestamp and consistent structure.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 404 — resource lookup failures (vet or specialty not found by ID)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleNotFound(ResourceNotFoundException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
@@ -23,6 +28,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    // 400 — duplicate name violations (e.g. creating a specialty that already exists)
     @ExceptionHandler(DuplicateResourceException.class)
     public ProblemDetail handleDuplicate(DuplicateResourceException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -32,6 +38,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    // 400 — bean validation failures from @Valid; collects per-field error messages
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
         List<Map<String, String>> errors = ex.getBindingResult().getFieldErrors().stream()
@@ -50,6 +57,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    // 400 — illegal argument errors
     @ExceptionHandler(IllegalArgumentException.class)
     public ProblemDetail handleIllegalArgument(IllegalArgumentException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
@@ -59,6 +67,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    // 500 — catch-all for unexpected exceptions
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneral(Exception ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(

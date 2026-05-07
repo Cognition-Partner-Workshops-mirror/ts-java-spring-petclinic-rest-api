@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller for veterinarian CRUD and search operations.
+ * Endpoints match the OpenAPI spec at /api/vets with optional query-param filtering.
+ */
 @RestController
 @RequestMapping("/api/vets")
 public class VetController {
@@ -28,6 +32,7 @@ public class VetController {
         this.vetService = vetService;
     }
 
+    // List all vets, or filter by lastName / specialtyId / specialtyName query params
     @GetMapping
     public ResponseEntity<List<VetResponseDto>> listVets(
             @RequestParam(required = false) String lastName,
@@ -46,17 +51,20 @@ public class VetController {
         return ResponseEntity.ok(result);
     }
 
+    // Retrieve a single vet by ID, returns 404 if not found
     @GetMapping("/{vetId}")
     public ResponseEntity<VetResponseDto> getVet(@PathVariable Integer vetId) {
         return ResponseEntity.ok(vetService.findById(vetId));
     }
 
+    // Create a new vet; @Valid triggers bean validation on the request DTO
     @PostMapping
     public ResponseEntity<VetResponseDto> addVet(@Valid @RequestBody VetRequestDto request) {
         VetResponseDto created = vetService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    // Update an existing vet's name and specialty assignments
     @PutMapping("/{vetId}")
     public ResponseEntity<VetResponseDto> updateVet(
             @PathVariable Integer vetId,
@@ -64,6 +72,7 @@ public class VetController {
         return ResponseEntity.ok(vetService.update(vetId, request));
     }
 
+    // Delete a vet by ID; returns the deleted entity for confirmation
     @DeleteMapping("/{vetId}")
     public ResponseEntity<VetResponseDto> deleteVet(@PathVariable Integer vetId) {
         return ResponseEntity.ok(vetService.delete(vetId));

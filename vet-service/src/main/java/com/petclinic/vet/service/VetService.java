@@ -16,6 +16,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Business logic for veterinarian management.
+ * Handles CRUD, specialty assignment, and search/filtering operations.
+ */
 @Service
 @Transactional(readOnly = true)
 public class VetService {
@@ -30,36 +34,42 @@ public class VetService {
         this.vetMapper = vetMapper;
     }
 
+    // Fetch all vets with their specialties eagerly loaded to avoid N+1 queries
     public List<VetResponseDto> findAll() {
         return vetRepository.findAllWithSpecialties().stream()
             .map(vetMapper::toResponseDto)
             .toList();
     }
 
+    // Fetch a single vet by ID; throws ResourceNotFoundException if missing
     public VetResponseDto findById(Integer id) {
         Vet vet = vetRepository.findByIdWithSpecialties(id)
             .orElseThrow(() -> new ResourceNotFoundException("Vet", id));
         return vetMapper.toResponseDto(vet);
     }
 
+    // Search vets by partial last name match (case-insensitive)
     public List<VetResponseDto> findByLastName(String lastName) {
         return vetRepository.findByLastNameContainingIgnoreCase(lastName).stream()
             .map(vetMapper::toResponseDto)
             .toList();
     }
 
+    // Filter vets that hold a specific specialty by its ID
     public List<VetResponseDto> findBySpecialtyId(Integer specialtyId) {
         return vetRepository.findBySpecialtyId(specialtyId).stream()
             .map(vetMapper::toResponseDto)
             .toList();
     }
 
+    // Filter vets by partial specialty name match (case-insensitive)
     public List<VetResponseDto> findBySpecialtyName(String specialtyName) {
         return vetRepository.findBySpecialtyNameContainingIgnoreCase(specialtyName).stream()
             .map(vetMapper::toResponseDto)
             .toList();
     }
 
+    // Create a new vet and assign specialties by their IDs
     @Transactional
     public VetResponseDto create(VetRequestDto request) {
         Set<Specialty> specialties = resolveSpecialties(request.specialties());
@@ -69,6 +79,7 @@ public class VetService {
         return vetMapper.toResponseDto(vet);
     }
 
+    // Update an existing vet's name and re-assign specialties
     @Transactional
     public VetResponseDto update(Integer id, VetRequestDto request) {
         Vet vet = vetRepository.findByIdWithSpecialties(id)
@@ -82,6 +93,7 @@ public class VetService {
         return vetMapper.toResponseDto(vet);
     }
 
+    // Delete a vet; returns the deleted entity for client confirmation
     @Transactional
     public VetResponseDto delete(Integer id) {
         Vet vet = vetRepository.findByIdWithSpecialties(id)
@@ -90,6 +102,7 @@ public class VetService {
         return vetMapper.toResponseDto(vet);
     }
 
+    // Resolve specialty references (IDs) into managed JPA entities; throws if any ID is invalid
     private Set<Specialty> resolveSpecialties(List<SpecialtyReferenceDto> refs) {
         Set<Specialty> specialties = new HashSet<>();
         if (refs == null || refs.isEmpty()) {

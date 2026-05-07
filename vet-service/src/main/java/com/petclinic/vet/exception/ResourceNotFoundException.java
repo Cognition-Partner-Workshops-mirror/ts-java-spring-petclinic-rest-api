@@ -1,5 +1,6 @@
 package com.petclinic.vet.exception;
 
+/** Thrown when a vet or specialty is not found by ID. Mapped to HTTP 404 by GlobalExceptionHandler. */
 public class ResourceNotFoundException extends RuntimeException {
 
     private final String resourceName;

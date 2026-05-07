@@ -19,6 +19,11 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * JPA entity representing a veterinarian.
+ * Has a many-to-many relationship with Specialty via the vet_specialties join table.
+ * Audit fields (createdAt, updatedAt) are auto-populated by Spring Data JPA auditing.
+ */
 @Entity
 @Table(name = "vets")
 @EntityListeners(AuditingEntityListener.class)
@@ -34,6 +39,7 @@ public class Vet {
     @Column(name = "last_name", nullable = false, length = 30)
     private String lastName;
 
+    // Many-to-many link to specialties; lazy-loaded by default, eagerly fetched in repository queries
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "vet_specialties",
