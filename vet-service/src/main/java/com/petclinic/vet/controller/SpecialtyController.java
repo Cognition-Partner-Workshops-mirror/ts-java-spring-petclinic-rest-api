@@ -3,6 +3,10 @@ package com.petclinic.vet.controller;
 import com.petclinic.vet.dto.SpecialtyRequestDto;
 import com.petclinic.vet.dto.SpecialtyResponseDto;
 import com.petclinic.vet.service.SpecialtyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/specialties")
+@Tag(name = "Specialties", description = "Endpoints for managing veterinary specialties")
 public class SpecialtyController {
 
     private final SpecialtyService specialtyService;
@@ -29,8 +34,10 @@ public class SpecialtyController {
     }
 
     @GetMapping
+    @Operation(summary = "List specialties", description = "Returns all specialties, optionally filtered by name")
+    @ApiResponse(responseCode = "200", description = "List of specialties")
     public ResponseEntity<List<SpecialtyResponseDto>> listSpecialties(
-            @RequestParam(required = false) String name) {
+            @Parameter(description = "Filter by specialty name") @RequestParam(required = false) String name) {
         if (name != null && !name.isBlank()) {
             return ResponseEntity.ok(specialtyService.searchByName(name));
         }
@@ -38,6 +45,8 @@ public class SpecialtyController {
     }
 
     @PostMapping
+    @Operation(summary = "Add a specialty", description = "Creates a new veterinary specialty")
+    @ApiResponse(responseCode = "201", description = "Specialty created")
     public ResponseEntity<SpecialtyResponseDto> addSpecialty(
             @Valid @RequestBody SpecialtyRequestDto request) {
         SpecialtyResponseDto created = specialtyService.create(request);
@@ -45,11 +54,17 @@ public class SpecialtyController {
     }
 
     @GetMapping("/{specialtyId}")
+    @Operation(summary = "Get a specialty", description = "Returns a single specialty by ID")
+    @ApiResponse(responseCode = "200", description = "Specialty found")
+    @ApiResponse(responseCode = "404", description = "Specialty not found")
     public ResponseEntity<SpecialtyResponseDto> getSpecialty(@PathVariable Integer specialtyId) {
         return ResponseEntity.ok(specialtyService.findById(specialtyId));
     }
 
     @PutMapping("/{specialtyId}")
+    @Operation(summary = "Update a specialty", description = "Updates an existing specialty")
+    @ApiResponse(responseCode = "200", description = "Specialty updated")
+    @ApiResponse(responseCode = "404", description = "Specialty not found")
     public ResponseEntity<SpecialtyResponseDto> updateSpecialty(
             @PathVariable Integer specialtyId,
             @Valid @RequestBody SpecialtyRequestDto request) {
@@ -57,6 +72,9 @@ public class SpecialtyController {
     }
 
     @DeleteMapping("/{specialtyId}")
+    @Operation(summary = "Delete a specialty", description = "Deletes a specialty by ID")
+    @ApiResponse(responseCode = "200", description = "Specialty deleted")
+    @ApiResponse(responseCode = "404", description = "Specialty not found")
     public ResponseEntity<SpecialtyResponseDto> deleteSpecialty(@PathVariable Integer specialtyId) {
         return ResponseEntity.ok(specialtyService.delete(specialtyId));
     }
