@@ -98,8 +98,13 @@ class VetServiceImplTest {
 
     @Test
     void create_savesAndReturnsVet() {
+        Specialty radiology = new Specialty();
+        radiology.setId(1);
+        radiology.setName("radiology");
+
         when(vetMapper.toEntity(requestDto)).thenReturn(vet);
-        when(specialtyRepository.findByNameInIgnoreCase(anySet())).thenReturn(List.of());
+        // Return matching specialty so validation passes
+        when(specialtyRepository.findByNameInIgnoreCase(anySet())).thenReturn(List.of(radiology));
         when(vetRepository.save(any(Vet.class))).thenReturn(vet);
         when(vetMapper.toResponseDto(vet)).thenReturn(responseDto);
 
@@ -107,6 +112,17 @@ class VetServiceImplTest {
 
         assertThat(result.firstName()).isEqualTo("James");
         verify(vetRepository).save(any(Vet.class));
+    }
+
+    @Test
+    void create_throwsWhenSpecialtyNotFound() {
+        when(vetMapper.toEntity(requestDto)).thenReturn(vet);
+        // Return empty list to simulate unrecognized specialty
+        when(specialtyRepository.findByNameInIgnoreCase(anySet())).thenReturn(List.of());
+
+        assertThatThrownBy(() -> vetService.create(requestDto))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Unknown specialties");
     }
 
     @Test
@@ -147,8 +163,13 @@ class VetServiceImplTest {
 
     @Test
     void update_updatesAndReturnsVet() {
+        Specialty radiology = new Specialty();
+        radiology.setId(1);
+        radiology.setName("radiology");
+
         when(vetRepository.findById(1)).thenReturn(Optional.of(vet));
-        when(specialtyRepository.findByNameInIgnoreCase(anySet())).thenReturn(List.of());
+        // Return matching specialty so validation passes
+        when(specialtyRepository.findByNameInIgnoreCase(anySet())).thenReturn(List.of(radiology));
         when(vetRepository.save(any(Vet.class))).thenReturn(vet);
         when(vetMapper.toResponseDto(vet)).thenReturn(responseDto);
 

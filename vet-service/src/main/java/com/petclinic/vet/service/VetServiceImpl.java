@@ -85,7 +85,7 @@ public class VetServiceImpl implements VetService {
         return vetMapper.toResponseDtos(vetRepository.findByNameContainingIgnoreCase(name));
     }
 
-    // Resolve specialties from DB by name to avoid orphan inserts
+    // Resolve specialties from DB by name; throws if any requested name is not found
     private Set<Specialty> resolveSpecialties(VetRequestDto request) {
         if (request.specialties() == null || request.specialties().isEmpty()) {
             return new HashSet<>();
@@ -94,6 +94,17 @@ public class VetServiceImpl implements VetService {
             .map(s -> s.name())
             .collect(Collectors.toSet());
         List<Specialty> found = specialtyRepository.findByNameInIgnoreCase(names);
+        // Validate all requested specialty names were found in the database
+        if (found.size() != names.size()) {
+            Set<String> foundNames = found.stream()
+                .map(s -> s.getName().toLowerCase())
+                .collect(Collectors.toSet());
+            Set<String> missing = names.stream()
+                .filter(n -> !foundNames.contains(n.toLowerCase()))
+                .collect(Collectors.toSet());
+            throw new IllegalArgumentException(
+                "Unknown specialties: " + String.join(", ", missing));
+        }
         return new HashSet<>(found);
     }
 }

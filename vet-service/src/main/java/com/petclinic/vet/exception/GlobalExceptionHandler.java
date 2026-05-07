@@ -44,6 +44,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
     }
 
+    // Handles invalid argument errors (e.g. unrecognized specialty names) as 400 Bad Request
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
+        ProblemDetail detail = buildProblemDetail(ex, HttpStatus.BAD_REQUEST, request, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ProblemDetail> handleGeneral(Exception ex, WebRequest request) {
         ProblemDetail detail = buildProblemDetail(ex, HttpStatus.INTERNAL_SERVER_ERROR, request,
