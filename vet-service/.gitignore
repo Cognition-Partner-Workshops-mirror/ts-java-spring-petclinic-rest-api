@@ -1,0 +1,13 @@
+# Gradle build artifacts
+build/
+.gradle/
+out/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+*.swp
