@@ -23,7 +23,7 @@ class MapperTest {
     @Test
     void specialtyMapper_toResponseDto() {
         Specialty entity = new Specialty();
-        entity.setId(1);
+        entity.setSpecialtyId(1);
         entity.setName("radiology");
 
         SpecialtyResponseDto dto = specialtyMapper.toResponseDto(entity);
@@ -38,35 +38,35 @@ class MapperTest {
 
         Specialty entity = specialtyMapper.toEntity(dto);
 
-        assertThat(entity.getId()).isNull();
+        assertThat(entity.getSpecialtyId()).isNull();
         assertThat(entity.getName()).isEqualTo("oncology");
     }
 
     @Test
     void specialtyMapper_updateEntity() {
         Specialty entity = new Specialty();
-        entity.setId(1);
+        entity.setSpecialtyId(1);
         entity.setName("old");
 
         SpecialtyRequestDto dto = new SpecialtyRequestDto("new");
         specialtyMapper.updateEntity(entity, dto);
 
         assertThat(entity.getName()).isEqualTo("new");
-        assertThat(entity.getId()).isEqualTo(1);
+        assertThat(entity.getSpecialtyId()).isEqualTo(1);
     }
 
     @Test
     void vetMapper_toResponseDto() {
         Specialty radiology = new Specialty();
-        radiology.setId(1);
+        radiology.setSpecialtyId(1);
         radiology.setName("radiology");
 
         Specialty surgery = new Specialty();
-        surgery.setId(2);
+        surgery.setSpecialtyId(2);
         surgery.setName("surgery");
 
         Vet vet = new Vet();
-        vet.setId(1);
+        vet.setVetId(1);
         vet.setFirstName("James");
         vet.setLastName("Carter");
         vet.setSpecialties(new HashSet<>(Set.of(radiology, surgery)));
@@ -84,7 +84,7 @@ class MapperTest {
     @Test
     void vetMapper_toEntity() {
         Specialty radiology = new Specialty();
-        radiology.setId(1);
+        radiology.setSpecialtyId(1);
         radiology.setName("radiology");
 
         VetRequestDto dto = new VetRequestDto("John", "Doe",
@@ -100,13 +100,13 @@ class MapperTest {
     @Test
     void vetMapper_updateEntity() {
         Vet entity = new Vet();
-        entity.setId(1);
+        entity.setVetId(1);
         entity.setFirstName("Old");
         entity.setLastName("Name");
         entity.setSpecialties(new HashSet<>());
 
         Specialty surgery = new Specialty();
-        surgery.setId(2);
+        surgery.setSpecialtyId(2);
         surgery.setName("surgery");
 
         VetRequestDto dto = new VetRequestDto("New", "Name",
@@ -121,7 +121,7 @@ class MapperTest {
     @Test
     void vetMapper_toResponseDto_emptySpecialties() {
         Vet vet = new Vet();
-        vet.setId(1);
+        vet.setVetId(1);
         vet.setFirstName("James");
         vet.setLastName("Carter");
         vet.setSpecialties(new HashSet<>());

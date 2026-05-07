@@ -14,14 +14,14 @@ class EntityTest {
     @Test
     void specialty_auditFields() {
         Specialty specialty = new Specialty();
-        specialty.setId(1);
+        specialty.setSpecialtyId(1);
         specialty.setName("radiology");
 
         LocalDateTime now = LocalDateTime.now();
         specialty.setCreatedAt(now);
         specialty.setUpdatedAt(now);
 
-        assertThat(specialty.getId()).isEqualTo(1);
+        assertThat(specialty.getSpecialtyId()).isEqualTo(1);
         assertThat(specialty.getName()).isEqualTo("radiology");
         assertThat(specialty.getCreatedAt()).isEqualTo(now);
         assertThat(specialty.getUpdatedAt()).isEqualTo(now);
@@ -47,7 +47,7 @@ class EntityTest {
     @Test
     void vet_auditFields() {
         Vet vet = new Vet();
-        vet.setId(1);
+        vet.setVetId(1);
         vet.setFirstName("James");
         vet.setLastName("Carter");
 
@@ -58,7 +58,7 @@ class EntityTest {
         Set<Specialty> specialties = new HashSet<>();
         vet.setSpecialties(specialties);
 
-        assertThat(vet.getId()).isEqualTo(1);
+        assertThat(vet.getVetId()).isEqualTo(1);
         assertThat(vet.getFirstName()).isEqualTo("James");
         assertThat(vet.getLastName()).isEqualTo("Carter");
         assertThat(vet.getCreatedAt()).isEqualTo(now);

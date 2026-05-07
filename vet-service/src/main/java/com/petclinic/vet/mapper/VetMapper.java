@@ -25,7 +25,7 @@ public class VetMapper {
             .sorted(Comparator.comparing(Specialty::getName, String.CASE_INSENSITIVE_ORDER))
             .map(specialtyMapper::toResponseDto)
             .collect(Collectors.toList());
-        return new VetResponseDto(entity.getId(), entity.getFirstName(), entity.getLastName(), specialties);
+        return new VetResponseDto(entity.getVetId(), entity.getFirstName(), entity.getLastName(), specialties);
     }
 
     public Vet toEntity(VetRequestDto dto, Set<Specialty> specialties) {

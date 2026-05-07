@@ -48,7 +48,7 @@ class VetRepositoryTest {
         vet.setLastName("Doe");
         Vet saved = vetRepository.save(vet);
 
-        assertThat(saved.getId()).isNotNull();
+        assertThat(saved.getVetId()).isNotNull();
         assertThat(saved.getFirstName()).isEqualTo("John");
     }
 
@@ -107,7 +107,7 @@ class VetRepositoryTest {
         vet.setFirstName("Temp");
         vet.setLastName("Vet");
         Vet saved = vetRepository.save(vet);
-        Integer id = saved.getId();
+        Integer id = saved.getVetId();
 
         vetRepository.deleteById(id);
 

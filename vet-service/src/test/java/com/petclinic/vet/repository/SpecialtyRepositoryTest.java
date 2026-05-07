@@ -40,7 +40,7 @@ class SpecialtyRepositoryTest {
         specialty.setName("oncology");
         Specialty saved = specialtyRepository.save(specialty);
 
-        assertThat(saved.getId()).isNotNull();
+        assertThat(saved.getSpecialtyId()).isNotNull();
         assertThat(saved.getName()).isEqualTo("oncology");
     }
 
@@ -69,7 +69,7 @@ class SpecialtyRepositoryTest {
         Specialty specialty = new Specialty();
         specialty.setName("temp");
         Specialty saved = specialtyRepository.save(specialty);
-        Integer id = saved.getId();
+        Integer id = saved.getSpecialtyId();
 
         specialtyRepository.deleteById(id);
 

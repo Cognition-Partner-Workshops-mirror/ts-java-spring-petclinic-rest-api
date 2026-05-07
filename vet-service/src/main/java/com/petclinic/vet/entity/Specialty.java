@@ -16,7 +16,8 @@ public class Specialty {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Integer specialtyId;
 
     @Column(name = "name", nullable = false, length = 80)
     private String name;
@@ -38,12 +39,12 @@ public class Specialty {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSpecialtyId() {
+        return specialtyId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSpecialtyId(Integer specialtyId) {
+        this.specialtyId = specialtyId;
     }
 
     public String getName() {

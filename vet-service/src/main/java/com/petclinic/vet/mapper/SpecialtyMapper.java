@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class SpecialtyMapper {
 
     public SpecialtyResponseDto toResponseDto(Specialty entity) {
-        return new SpecialtyResponseDto(entity.getId(), entity.getName());
+        return new SpecialtyResponseDto(entity.getSpecialtyId(), entity.getName());
     }
 
     public Specialty toEntity(SpecialtyRequestDto dto) {

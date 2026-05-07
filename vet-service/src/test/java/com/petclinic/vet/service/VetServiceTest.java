@@ -50,11 +50,11 @@ class VetServiceTest {
     @BeforeEach
     void setUp() {
         radiology = new Specialty();
-        radiology.setId(1);
+        radiology.setSpecialtyId(1);
         radiology.setName("radiology");
 
         james = new Vet();
-        james.setId(1);
+        james.setVetId(1);
         james.setFirstName("James");
         james.setLastName("Carter");
         james.setSpecialties(new HashSet<>());
@@ -65,7 +65,7 @@ class VetServiceTest {
     @Test
     void listVets_returnsAll() {
         Vet helen = new Vet();
-        helen.setId(2);
+        helen.setVetId(2);
         helen.setFirstName("Helen");
         helen.setLastName("Leary");
         helen.setSpecialties(new HashSet<>(Set.of(radiology)));
@@ -106,7 +106,7 @@ class VetServiceTest {
         SpecialtyResponseDto specDto = new SpecialtyResponseDto(1, "radiology");
         VetRequestDto request = new VetRequestDto("John", "Doe", List.of(specDto));
         Vet newVet = new Vet();
-        newVet.setId(10);
+        newVet.setVetId(10);
         newVet.setFirstName("John");
         newVet.setLastName("Doe");
         newVet.setSpecialties(new HashSet<>(Set.of(radiology)));
@@ -128,7 +128,7 @@ class VetServiceTest {
     void createVet_emptySpecialties_returnsCreated() {
         VetRequestDto request = new VetRequestDto("John", "Doe", List.of());
         Vet newVet = new Vet();
-        newVet.setId(10);
+        newVet.setVetId(10);
         newVet.setFirstName("John");
         newVet.setLastName("Doe");
         newVet.setSpecialties(new HashSet<>());
@@ -147,7 +147,7 @@ class VetServiceTest {
     void createVet_nullSpecialties_returnsCreated() {
         VetRequestDto request = new VetRequestDto("John", "Doe", null);
         Vet newVet = new Vet();
-        newVet.setId(10);
+        newVet.setVetId(10);
         newVet.setFirstName("John");
         newVet.setLastName("Doe");
         VetResponseDto responseDto = new VetResponseDto(10, "John", "Doe", List.of());
@@ -166,7 +166,7 @@ class VetServiceTest {
         SpecialtyResponseDto specDtoNoId = new SpecialtyResponseDto(null, "radiology");
         VetRequestDto request = new VetRequestDto("John", "Doe", List.of(specDtoNoId));
         Vet newVet = new Vet();
-        newVet.setId(10);
+        newVet.setVetId(10);
         VetResponseDto responseDto = new VetResponseDto(10, "John", "Doe", List.of());
 
         when(vetMapper.toEntity(eq(request), any())).thenReturn(newVet);

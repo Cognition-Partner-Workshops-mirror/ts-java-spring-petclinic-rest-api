@@ -22,7 +22,8 @@ public class Vet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Integer vetId;
 
     @Column(name = "first_name", nullable = false, length = 30)
     private String firstName;
@@ -55,12 +56,12 @@ public class Vet {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getVetId() {
+        return vetId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setVetId(Integer vetId) {
+        this.vetId = vetId;
     }
 
     public String getFirstName() {

@@ -40,7 +40,7 @@ class SpecialtyServiceTest {
     @BeforeEach
     void setUp() {
         radiology = new Specialty();
-        radiology.setId(1);
+        radiology.setSpecialtyId(1);
         radiology.setName("radiology");
 
         radiologyDto = new SpecialtyResponseDto(1, "radiology");
@@ -49,7 +49,7 @@ class SpecialtyServiceTest {
     @Test
     void listSpecialties_returnsAll() {
         Specialty surgery = new Specialty();
-        surgery.setId(2);
+        surgery.setSpecialtyId(2);
         surgery.setName("surgery");
         SpecialtyResponseDto surgeryDto = new SpecialtyResponseDto(2, "surgery");
 
@@ -88,7 +88,7 @@ class SpecialtyServiceTest {
         Specialty entity = new Specialty();
         entity.setName("oncology");
         Specialty saved = new Specialty();
-        saved.setId(10);
+        saved.setSpecialtyId(10);
         saved.setName("oncology");
         SpecialtyResponseDto responseDto = new SpecialtyResponseDto(10, "oncology");
 
