@@ -1,0 +1,10 @@
+package com.petclinic.vet.dto;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
+public record SpecialtyDto(
+    Integer id,
+    @NotEmpty @Size(min = 1, max = 80) String name
+) {
+}
