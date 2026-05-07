@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VetController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">vet-service</a> &gt; <a href="index.source.html" class="el_package">com.petclinic.vet.controller</a> &gt; <span class="el_source">VetController.java</span></div><h1>VetController.java</h1><pre class="source lang-java linenums">package com.petclinic.vet.controller;
+
+import com.petclinic.vet.dto.VetRequest;
+import com.petclinic.vet.dto.VetResponse;
+import com.petclinic.vet.service.VetService;
+import jakarta.validation.Valid;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(&quot;/vets&quot;)
+public class VetController {
+
+    private final VetService service;
+
+<span class="fc" id="L26">    public VetController(VetService service) {</span>
+<span class="fc" id="L27">        this.service = service;</span>
+<span class="fc" id="L28">    }</span>
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;VetResponse&gt;&gt; listVets(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer specialtyId) {
+<span class="pc bpc" id="L34" title="1 of 4 branches missed.">        if (name != null &amp;&amp; !name.isBlank()) {</span>
+<span class="fc" id="L35">            return ResponseEntity.ok(service.searchByName(name));</span>
+        }
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (specialtyId != null) {</span>
+<span class="fc" id="L38">            return ResponseEntity.ok(service.findBySpecialtyId(specialtyId));</span>
+        }
+<span class="fc" id="L40">        return ResponseEntity.ok(service.findAll());</span>
+    }
+
+    @GetMapping(&quot;/{vetId}&quot;)
+    public ResponseEntity&lt;VetResponse&gt; getVet(@PathVariable Integer vetId) {
+<span class="fc" id="L45">        return ResponseEntity.ok(service.findById(vetId));</span>
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;VetResponse&gt; addVet(@Valid @RequestBody VetRequest request) {
+<span class="fc" id="L50">        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));</span>
+    }
+
+    @PutMapping(&quot;/{vetId}&quot;)
+    public ResponseEntity&lt;VetResponse&gt; updateVet(
+            @PathVariable Integer vetId,
+            @Valid @RequestBody VetRequest request) {
+<span class="fc" id="L57">        return ResponseEntity.ok(service.update(vetId, request));</span>
+    }
+
+    @DeleteMapping(&quot;/{vetId}&quot;)
+    public ResponseEntity&lt;VetResponse&gt; deleteVet(@PathVariable Integer vetId) {
+<span class="fc" id="L62">        return ResponseEntity.ok(service.delete(vetId));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

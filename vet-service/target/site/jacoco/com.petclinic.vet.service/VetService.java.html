@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VetService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">vet-service</a> &gt; <a href="index.source.html" class="el_package">com.petclinic.vet.service</a> &gt; <span class="el_source">VetService.java</span></div><h1>VetService.java</h1><pre class="source lang-java linenums">package com.petclinic.vet.service;
+
+import com.petclinic.vet.dto.SpecialtyRequest;
+import com.petclinic.vet.dto.VetRequest;
+import com.petclinic.vet.dto.VetResponse;
+import com.petclinic.vet.entity.Specialty;
+import com.petclinic.vet.entity.Vet;
+import com.petclinic.vet.exception.ResourceNotFoundException;
+import com.petclinic.vet.mapper.VetMapper;
+import com.petclinic.vet.repository.SpecialtyRepository;
+import com.petclinic.vet.repository.VetRepository;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class VetService {
+
+    private final VetRepository vetRepository;
+    private final SpecialtyRepository specialtyRepository;
+    private final VetMapper vetMapper;
+
+<span class="fc" id="L26">    public VetService(VetRepository vetRepository, SpecialtyRepository specialtyRepository, VetMapper vetMapper) {</span>
+<span class="fc" id="L27">        this.vetRepository = vetRepository;</span>
+<span class="fc" id="L28">        this.specialtyRepository = specialtyRepository;</span>
+<span class="fc" id="L29">        this.vetMapper = vetMapper;</span>
+<span class="fc" id="L30">    }</span>
+
+    @Transactional(readOnly = true)
+    public List&lt;VetResponse&gt; findAll() {
+<span class="fc" id="L34">        return vetMapper.toResponseList(vetRepository.findAll());</span>
+    }
+
+    @Transactional(readOnly = true)
+    public VetResponse findById(Integer id) {
+<span class="fc" id="L39">        Vet vet = vetRepository.findById(id)</span>
+<span class="fc" id="L40">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet&quot;, id));</span>
+<span class="fc" id="L41">        return vetMapper.toResponse(vet);</span>
+    }
+
+    public VetResponse create(VetRequest request) {
+<span class="fc" id="L45">        Vet vet = new Vet();</span>
+<span class="fc" id="L46">        vet.setFirstName(request.firstName());</span>
+<span class="fc" id="L47">        vet.setLastName(request.lastName());</span>
+<span class="fc" id="L48">        vet.setSpecialties(resolveSpecialties(request.specialties()));</span>
+<span class="fc" id="L49">        return vetMapper.toResponse(vetRepository.save(vet));</span>
+    }
+
+    public VetResponse update(Integer id, VetRequest request) {
+<span class="fc" id="L53">        Vet vet = vetRepository.findById(id)</span>
+<span class="fc" id="L54">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet&quot;, id));</span>
+<span class="fc" id="L55">        vet.setFirstName(request.firstName());</span>
+<span class="fc" id="L56">        vet.setLastName(request.lastName());</span>
+<span class="fc" id="L57">        vet.setSpecialties(resolveSpecialties(request.specialties()));</span>
+<span class="fc" id="L58">        return vetMapper.toResponse(vetRepository.save(vet));</span>
+    }
+
+    public VetResponse delete(Integer id) {
+<span class="fc" id="L62">        Vet vet = vetRepository.findById(id)</span>
+<span class="fc" id="L63">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Vet&quot;, id));</span>
+<span class="fc" id="L64">        VetResponse response = vetMapper.toResponse(vet);</span>
+<span class="fc" id="L65">        vetRepository.delete(vet);</span>
+<span class="fc" id="L66">        return response;</span>
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;VetResponse&gt; searchByName(String name) {
+<span class="fc" id="L71">        return vetMapper.toResponseList(vetRepository.searchByName(name));</span>
+    }
+
+    @Transactional(readOnly = true)
+    public List&lt;VetResponse&gt; findBySpecialtyId(Integer specialtyId) {
+<span class="fc" id="L76">        return vetMapper.toResponseList(vetRepository.findBySpecialtyId(specialtyId));</span>
+    }
+
+    private Set&lt;Specialty&gt; resolveSpecialties(List&lt;SpecialtyRequest&gt; requests) {
+<span class="fc" id="L80">        Set&lt;Specialty&gt; specialties = new HashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (requests == null) {</span>
+<span class="fc" id="L82">            return specialties;</span>
+        }
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        for (SpecialtyRequest req : requests) {</span>
+<span class="fc" id="L85">            List&lt;Specialty&gt; found = specialtyRepository.findByNameContainingIgnoreCase(req.name());</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">            if (!found.isEmpty()) {</span>
+<span class="fc" id="L87">                specialties.add(found.get(0));</span>
+            } else {
+<span class="fc" id="L89">                Specialty s = new Specialty();</span>
+<span class="fc" id="L90">                s.setName(req.name());</span>
+<span class="fc" id="L91">                specialties.add(specialtyRepository.save(s));</span>
+            }
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">        return specialties;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

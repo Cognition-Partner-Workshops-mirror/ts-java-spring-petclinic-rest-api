@@ -1,0 +1,17 @@
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/VetServiceApplication.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/controller/SpecialtyController.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/controller/VetController.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/dto/SpecialtyRequest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/dto/SpecialtyResponse.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/dto/VetRequest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/dto/VetResponse.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/entity/Specialty.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/entity/Vet.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/exception/GlobalExceptionHandler.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/exception/ResourceNotFoundException.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/mapper/SpecialtyMapper.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/mapper/VetMapper.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/repository/SpecialtyRepository.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/repository/VetRepository.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/service/SpecialtyService.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/main/java/com/petclinic/vet/service/VetService.java

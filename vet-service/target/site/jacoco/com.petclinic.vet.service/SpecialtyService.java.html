@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpecialtyService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">vet-service</a> &gt; <a href="index.source.html" class="el_package">com.petclinic.vet.service</a> &gt; <span class="el_source">SpecialtyService.java</span></div><h1>SpecialtyService.java</h1><pre class="source lang-java linenums">package com.petclinic.vet.service;
+
+import com.petclinic.vet.dto.SpecialtyRequest;
+import com.petclinic.vet.dto.SpecialtyResponse;
+import com.petclinic.vet.entity.Specialty;
+import com.petclinic.vet.exception.ResourceNotFoundException;
+import com.petclinic.vet.mapper.SpecialtyMapper;
+import com.petclinic.vet.repository.SpecialtyRepository;
+import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class SpecialtyService {
+
+    private final SpecialtyRepository repository;
+    private final SpecialtyMapper mapper;
+
+<span class="fc" id="L20">    public SpecialtyService(SpecialtyRepository repository, SpecialtyMapper mapper) {</span>
+<span class="fc" id="L21">        this.repository = repository;</span>
+<span class="fc" id="L22">        this.mapper = mapper;</span>
+<span class="fc" id="L23">    }</span>
+
+    @Transactional(readOnly = true)
+    public List&lt;SpecialtyResponse&gt; findAll() {
+<span class="fc" id="L27">        return mapper.toResponseList(repository.findAll());</span>
+    }
+
+    @Transactional(readOnly = true)
+    public SpecialtyResponse findById(Integer id) {
+<span class="fc" id="L32">        Specialty entity = repository.findById(id)</span>
+<span class="fc" id="L33">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, id));</span>
+<span class="fc" id="L34">        return mapper.toResponse(entity);</span>
+    }
+
+    public SpecialtyResponse create(SpecialtyRequest request) {
+<span class="fc" id="L38">        Specialty entity = mapper.toEntity(request);</span>
+<span class="fc" id="L39">        return mapper.toResponse(repository.save(entity));</span>
+    }
+
+    public SpecialtyResponse update(Integer id, SpecialtyRequest request) {
+<span class="fc" id="L43">        Specialty entity = repository.findById(id)</span>
+<span class="fc" id="L44">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, id));</span>
+<span class="fc" id="L45">        mapper.updateEntity(request, entity);</span>
+<span class="fc" id="L46">        return mapper.toResponse(repository.save(entity));</span>
+    }
+
+    public SpecialtyResponse delete(Integer id) {
+<span class="fc" id="L50">        Specialty entity = repository.findById(id)</span>
+<span class="fc" id="L51">            .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Specialty&quot;, id));</span>
+<span class="fc" id="L52">        SpecialtyResponse response = mapper.toResponse(entity);</span>
+<span class="fc" id="L53">        repository.delete(entity);</span>
+<span class="fc" id="L54">        return response;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

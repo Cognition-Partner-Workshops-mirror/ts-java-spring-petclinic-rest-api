@@ -1,0 +1,8 @@
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/VetServiceApplicationTests.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/controller/SpecialtyControllerTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/controller/VetControllerTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/exception/GlobalExceptionHandlerTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/repository/SpecialtyRepositoryTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/repository/VetRepositoryTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/service/SpecialtyServiceTest.java
+/home/ubuntu/repos/ts-java-spring-petclinic-rest-api/vet-service/src/test/java/com/petclinic/vet/service/VetServiceTest.java
