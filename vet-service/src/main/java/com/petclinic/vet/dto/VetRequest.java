@@ -7,6 +7,10 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+/**
+ * Request DTO for creating or updating a vet.
+ * Validation constraints (name patterns, lengths) match the OpenAPI VetFields schema.
+ */
 public record VetRequest(
     @NotBlank
     @Size(min = 1, max = 30)

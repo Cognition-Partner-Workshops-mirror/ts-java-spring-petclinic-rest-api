@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller for vet endpoints matching the OpenAPI spec.
+ * Supports CRUD plus optional filtering by lastName and specialty query params.
+ */
 @RestController
 @RequestMapping("/vets")
 public class VetController {
@@ -28,6 +32,7 @@ public class VetController {
         this.vetService = vetService;
     }
 
+    /** Lists all vets, with optional filtering by lastName and/or specialty query params. */
     @GetMapping
     public ResponseEntity<List<VetResponse>> listVets(
             @RequestParam(required = false) String lastName,

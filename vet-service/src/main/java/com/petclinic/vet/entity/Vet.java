@@ -19,6 +19,11 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * JPA entity representing a veterinarian.
+ * Has a many-to-many relationship with Specialty via the "vet_specialties" join table.
+ * Includes audit timestamps (createdAt, updatedAt) via JPA auditing.
+ */
 @Entity
 @Table(name = "vets")
 @EntityListeners(AuditingEntityListener.class)

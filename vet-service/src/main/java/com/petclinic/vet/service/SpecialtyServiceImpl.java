@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/** Transactional service implementing specialty CRUD operations. */
 @Service
 @Transactional
 public class SpecialtyServiceImpl implements SpecialtyService {

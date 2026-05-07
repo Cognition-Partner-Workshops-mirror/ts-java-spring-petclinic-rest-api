@@ -8,6 +8,7 @@ import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
+/** MapStruct mapper for converting between Specialty entity and request/response DTOs. */
 @Mapper(componentModel = "spring")
 public interface SpecialtyMapper {
 

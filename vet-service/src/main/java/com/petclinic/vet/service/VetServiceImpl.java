@@ -16,6 +16,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Transactional service implementing vet CRUD, specialty assignment,
+ * and search/filtering by last name and specialty.
+ */
 @Service
 @Transactional
 public class VetServiceImpl implements VetService {
@@ -93,6 +97,7 @@ public class VetServiceImpl implements VetService {
             vetRepository.findByLastNameContainingIgnoreCaseAndSpecialtyName(lastName, specialtyName));
     }
 
+    /** Resolves specialty DTOs to managed JPA entities, throwing if any ID is not found. */
     private Set<Specialty> resolveSpecialties(List<SpecialtyResponse> specialtyDtos) {
         Set<Specialty> specialties = new HashSet<>();
         if (specialtyDtos == null) {

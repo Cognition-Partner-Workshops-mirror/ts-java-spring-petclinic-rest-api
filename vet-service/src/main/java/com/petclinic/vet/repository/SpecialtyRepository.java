@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/** Spring Data JPA repository for Specialty entities. Supports lookup by name. */
 @Repository
 public interface SpecialtyRepository extends JpaRepository<Specialty, Integer> {
 

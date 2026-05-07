@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller for specialty endpoints matching the OpenAPI spec.
+ * Provides CRUD operations for veterinary specialties.
+ */
 @RestController
 @RequestMapping("/specialties")
 public class SpecialtyController {

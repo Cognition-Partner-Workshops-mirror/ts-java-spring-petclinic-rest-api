@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * MapStruct mapper for converting between Vet entity and response DTOs.
+ * Includes custom mapping for the Specialty Set-to-List conversion.
+ */
 @Mapper(componentModel = "spring")
 public interface VetMapper {
 

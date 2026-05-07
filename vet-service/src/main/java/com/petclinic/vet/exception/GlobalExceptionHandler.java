@@ -12,9 +12,14 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Global exception handler producing RFC 7807 Problem Details responses.
+ * Handles resource-not-found (404), validation errors (400), and unexpected exceptions (500).
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /** Handles missing resources — returns 404 with a descriptive message. */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleNotFound(ResourceNotFoundException ex, WebRequest request) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
@@ -25,6 +30,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /** Handles @Valid failures — returns 400 with per-field error details. */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException ex) {
         List<Map<String, String>> errors = ex.getBindingResult().getFieldErrors().stream()
@@ -39,6 +45,7 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
+    /** Catch-all for unexpected errors — returns 500. */
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneral(Exception ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(

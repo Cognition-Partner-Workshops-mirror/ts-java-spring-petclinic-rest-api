@@ -5,6 +5,7 @@ import com.petclinic.vet.dto.VetResponse;
 
 import java.util.List;
 
+/** Service interface for vet CRUD, specialty assignment, and search/filtering operations. */
 public interface VetService {
 
     List<VetResponse> listAll();

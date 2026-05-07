@@ -13,6 +13,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 
+/**
+ * JPA entity representing a veterinary specialty (e.g. radiology, surgery).
+ * Mapped to the "specialties" table. Includes audit timestamps via JPA auditing.
+ */
 @Entity
 @Table(name = "specialties")
 @EntityListeners(AuditingEntityListener.class)
