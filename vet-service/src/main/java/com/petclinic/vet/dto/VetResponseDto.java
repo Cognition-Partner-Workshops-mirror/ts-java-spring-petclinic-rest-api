@@ -1,0 +1,54 @@
+package com.petclinic.vet.dto;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VetResponseDto {
+
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private List<SpecialtyResponseDto> specialties = new ArrayList<>();
+
+    public VetResponseDto() {
+    }
+
+    public VetResponseDto(Integer id, String firstName, String lastName, List<SpecialtyResponseDto> specialties) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.specialties = specialties != null ? specialties : new ArrayList<>();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public List<SpecialtyResponseDto> getSpecialties() {
+        return specialties;
+    }
+
+    public void setSpecialties(List<SpecialtyResponseDto> specialties) {
+        this.specialties = specialties;
+    }
+}
