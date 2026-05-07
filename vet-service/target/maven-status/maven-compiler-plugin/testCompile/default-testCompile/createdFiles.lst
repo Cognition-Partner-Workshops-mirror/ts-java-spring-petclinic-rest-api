@@ -1,7 +1,0 @@
-com/petclinic/vet/VetServiceApplicationTests.class
-com/petclinic/vet/repository/SpecialtyRepositoryTest.class
-com/petclinic/vet/controller/SpecialtyControllerTest.class
-com/petclinic/vet/service/VetServiceTest.class
-com/petclinic/vet/controller/VetControllerTest.class
-com/petclinic/vet/repository/VetRepositoryTest.class
-com/petclinic/vet/service/SpecialtyServiceTest.class
