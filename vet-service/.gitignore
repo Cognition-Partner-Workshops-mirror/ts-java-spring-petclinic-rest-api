@@ -1,2 +1,4 @@
-vet-service/.gradle/
-vet-service/build/
+.gradle/
+build/
+bin/
+.settings/
