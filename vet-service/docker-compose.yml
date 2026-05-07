@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  vet-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vet-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - vet-network
+
+  vet-service-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vet-service-prod
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/vetdb
+      SPRING_DATASOURCE_USERNAME: petclinic
+      SPRING_DATASOURCE_PASSWORD: petclinic
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - vet-network
+    profiles:
+      - prod
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: vet-db
+    environment:
+      POSTGRES_DB: vetdb
+      POSTGRES_USER: petclinic
+      POSTGRES_PASSWORD: petclinic
+    ports:
+      - "5432:5432"
+    volumes:
+      - vet-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U petclinic -d vetdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - vet-network
+
+volumes:
+  vet-pgdata:
+
+networks:
+  vet-network:
+    driver: bridge

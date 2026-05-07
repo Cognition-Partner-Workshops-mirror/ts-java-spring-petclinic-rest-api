@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: vet-service
+  profiles:
+    active: dev
+
+server:
+  port: 8083
+  servlet:
+    context-path: /petclinic/api
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
