@@ -54,7 +54,7 @@ public class VetController {
     public ResponseEntity<VetResponseDto> addVet(@Valid @RequestBody VetRequestDto dto, UriComponentsBuilder ucb) {
         VetResponseDto created = vetService.create(dto);
         return ResponseEntity
-            .created(ucb.path("/api/vets/{id}").buildAndExpand(created.id()).toUri())
+            .created(ucb.path("/vets/{id}").buildAndExpand(created.id()).toUri())
             .body(created);
     }
 

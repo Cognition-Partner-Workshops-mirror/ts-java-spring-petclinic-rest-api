@@ -94,6 +94,15 @@ public class VetServiceImpl implements VetService {
             .map(SpecialtyRequestDto::name)
             .collect(Collectors.toSet());
         List<Specialty> found = specialtyRepository.findByNameInIgnoreCase(names);
+        if (found.size() != names.size()) {
+            Set<String> foundNames = found.stream()
+                .map(s -> s.getName().toLowerCase())
+                .collect(Collectors.toSet());
+            Set<String> missing = names.stream()
+                .filter(n -> !foundNames.contains(n.toLowerCase()))
+                .collect(Collectors.toSet());
+            throw new IllegalArgumentException("Unknown specialties: " + missing);
+        }
         return new HashSet<>(found);
     }
 }

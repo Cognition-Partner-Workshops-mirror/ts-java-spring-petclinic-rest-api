@@ -163,6 +163,22 @@ class VetControllerTest {
             .andExpect(status().isNotFound());
     }
 
+    // Verifies that unknown specialty names produce a 400 Bad Request via the exception handler
+    @Test
+    void addVet_unknownSpecialty_returns400() throws Exception {
+        VetRequestDto request = new VetRequestDto("Helen", "Leary",
+            List.of(new SpecialtyRequestDto(null, "cardiology")));
+        when(vetService.create(any(VetRequestDto.class)))
+            .thenThrow(new IllegalArgumentException("Unknown specialties: [cardiology]"));
+
+        mockMvc.perform(post("/vets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.title", is("IllegalArgumentException")))
+            .andExpect(jsonPath("$.detail").value(org.hamcrest.Matchers.containsString("cardiology")));
+    }
+
     @Test
     void listVets_emptySpecialtyParam_returnsAll() throws Exception {
         VetResponseDto vet = new VetResponseDto(1, "James", "Carter", List.of());

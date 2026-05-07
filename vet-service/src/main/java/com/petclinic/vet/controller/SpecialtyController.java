@@ -42,7 +42,7 @@ public class SpecialtyController {
     public ResponseEntity<SpecialtyResponseDto> addSpecialty(@Valid @RequestBody SpecialtyRequestDto dto, UriComponentsBuilder ucb) {
         SpecialtyResponseDto created = specialtyService.create(dto);
         return ResponseEntity
-            .created(ucb.path("/api/specialties/{id}").buildAndExpand(created.id()).toUri())
+            .created(ucb.path("/specialties/{id}").buildAndExpand(created.id()).toUri())
             .body(created);
     }
 

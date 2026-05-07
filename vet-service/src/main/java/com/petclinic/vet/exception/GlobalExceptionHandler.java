@@ -52,6 +52,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(detail);
     }
 
+    // Handles bad request input such as unknown specialty names during vet create/update
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest request) {
+        log.debug("Bad request: {}", ex.getMessage());
+        ProblemDetail detail = buildProblemDetail(ex, HttpStatus.BAD_REQUEST, request, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(detail);
+    }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ProblemDetail> handleDataIntegrity(DataIntegrityViolationException ex, HttpServletRequest request) {
         log.warn("Data integrity violation: {}", ex.getMessage());

@@ -135,6 +135,21 @@ class VetServiceImplTest {
         assertThat(result.specialties()).isEmpty();
     }
 
+    // Verifies that unknown specialty names are rejected with IllegalArgumentException
+    @Test
+    void create_withUnknownSpecialty_throwsIllegalArgument() {
+        SpecialtyRequestDto specDto = new SpecialtyRequestDto(null, "cardiology");
+        VetRequestDto request = new VetRequestDto("Helen", "Leary", List.of(specDto));
+
+        Vet mappedVet = buildVet(null, "Helen", "Leary");
+        when(vetMapper.toEntity(request)).thenReturn(mappedVet);
+        when(specialtyRepository.findByNameInIgnoreCase(Set.of("cardiology"))).thenReturn(Collections.emptyList());
+
+        assertThatThrownBy(() -> vetService.create(request))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("cardiology");
+    }
+
     @Test
     void update_existingVet_updatesFields() {
         SpecialtyRequestDto specDto = new SpecialtyRequestDto(null, "surgery");

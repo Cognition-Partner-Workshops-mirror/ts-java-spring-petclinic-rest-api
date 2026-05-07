@@ -13,7 +13,7 @@ public interface VetRepository extends JpaRepository<Vet, Integer> {
 
     List<Vet> findByLastNameContainingIgnoreCase(String lastName);
 
-    @Query("SELECT DISTINCT v FROM Vet v JOIN v.specialties s WHERE s.name = :specialtyName")
+    @Query("SELECT DISTINCT v FROM Vet v JOIN v.specialties s WHERE LOWER(s.name) = LOWER(:specialtyName)")
     List<Vet> findBySpecialtyName(@Param("specialtyName") String specialtyName);
 
     @Query("SELECT DISTINCT v FROM Vet v JOIN v.specialties s WHERE LOWER(s.name) IN :specialtyNames")

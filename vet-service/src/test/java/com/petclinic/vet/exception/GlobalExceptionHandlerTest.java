@@ -42,6 +42,21 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
+    void handleIllegalArgument_returns400WithProblemDetail() {
+        IllegalArgumentException ex = new IllegalArgumentException("Unknown specialties: [cardiology]");
+        MockHttpServletRequest request = new MockHttpServletRequest("POST", "/api/vets");
+        request.setServerName("localhost");
+        request.setServerPort(8081);
+
+        ResponseEntity<ProblemDetail> response = handler.handleIllegalArgument(ex, request);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getTitle()).isEqualTo("IllegalArgumentException");
+        assertThat(response.getBody().getDetail()).contains("Unknown specialties");
+    }
+
+    @Test
     void handleDataIntegrity_returns409WithProblemDetail() {
         org.springframework.dao.DataIntegrityViolationException ex =
             new org.springframework.dao.DataIntegrityViolationException("duplicate key");
