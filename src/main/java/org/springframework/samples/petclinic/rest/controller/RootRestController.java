@@ -35,7 +35,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class RootRestController {
 
-    @Value("#{servletContext.contextPath}")
+    // Use property placeholder instead of SpEL #{servletContext.contextPath}
+    // because ApplicationContextFacade.contextPath is not reflectively accessible
+    // in GraalVM native images, causing a SpelEvaluationException at startup.
+    @Value("${server.servlet.context-path:}")
     private String servletContextPath;
 
 	@RequestMapping(value = "/")

@@ -3,7 +3,8 @@
 # Stage 2 packages the binary into a minimal Debian runtime image.
 
 # --- Stage 1: Build the native binary with GraalVM ---
-FROM ghcr.io/graalvm/native-image-community:21 AS builder
+# Spring Boot 4.x requires Java 25+ for native image AOT support
+FROM ghcr.io/graalvm/native-image-community:25 AS builder
 
 WORKDIR /build
 

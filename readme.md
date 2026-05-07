@@ -32,10 +32,11 @@ docker run -p 9966:9966 springcommunity/spring-petclinic-rest
 
 ### With GraalVM Native Image
 
-Building a native image requires a [GraalVM JDK 21+](https://www.graalvm.org/downloads/) with the `native-image` tool.
+Building a native image requires a [GraalVM JDK 25+](https://www.graalvm.org/downloads/) with the `native-image` tool.
+Spring Boot 4.x mandates Java 25+ for native image AOT support.
 
 #### Prerequisites
-- GraalVM JDK 21 or later (includes `native-image` out of the box)
+- GraalVM JDK 25 or later (includes `native-image` out of the box)
 - A C compiler toolchain (GCC or Clang) — typically pre-installed on Linux
 
 #### Build and run a native binary
