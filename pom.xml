@@ -565,7 +565,7 @@ for f in glob.glob('target/classes/META-INF/native-image/**/reachability-metadat
         for e in ser_types:
             t = e.get('type', e.get('name', ''))
             if t and t not in known:
-                existing_ser['types'].append({'name': t, 'customTargetConstructorClass': 'java.lang.Object'})
+                existing_ser['types'].append({'name': t})
                 known.add(t)
         with open(ser_file, 'w') as sh:
             json.dump(existing_ser, sh, indent=2)

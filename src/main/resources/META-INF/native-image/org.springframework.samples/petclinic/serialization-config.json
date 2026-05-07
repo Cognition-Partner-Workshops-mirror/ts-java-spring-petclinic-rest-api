@@ -1,161 +1,50 @@
 {
   "types": [
-    {
-      "name": "ch.qos.logback.core.model.Model",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ComponentModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.NamedComponentModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.NamedModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.AppenderModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.AppenderRefModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ImplicitModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ImportModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.IncludeModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.PropertyModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.DefineModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.TimestampModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.StatusListenerModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.EventEvaluatorModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ConversionRuleModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ParamModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ResourceModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.SequenceNumberGeneratorModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.SerializeModelModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.ShutdownHookModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.SiftModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.InsertFromJNDIModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.conditional.IfModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.conditional.ThenModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.core.model.conditional.ElseModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.ConfigurationModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.LoggerModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.RootLoggerModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.LevelModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.ContextNameModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.LoggerContextListenerModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.PropertiesConfiguratorModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "ch.qos.logback.classic.model.ReceiverModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "org.springframework.boot.logging.logback.SpringProfileModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "org.springframework.boot.logging.logback.SpringPropertyModel",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "java.util.ArrayList",
-      "customTargetConstructorClass": "java.lang.Object"
-    },
-    {
-      "name": "java.lang.String"
-    },
-    {
-      "name": "java.lang.Boolean"
-    },
-    {
-      "name": "java.lang.Integer"
-    },
-    {
-      "name": "java.lang.Number"
-    }
+    {"name": "ch.qos.logback.core.model.Model"},
+    {"name": "ch.qos.logback.core.model.ComponentModel"},
+    {"name": "ch.qos.logback.core.model.NamedComponentModel"},
+    {"name": "ch.qos.logback.core.model.NamedModel"},
+    {"name": "ch.qos.logback.core.model.AppenderModel"},
+    {"name": "ch.qos.logback.core.model.AppenderRefModel"},
+    {"name": "ch.qos.logback.core.model.ImplicitModel"},
+    {"name": "ch.qos.logback.core.model.ImportModel"},
+    {"name": "ch.qos.logback.core.model.IncludeModel"},
+    {"name": "ch.qos.logback.core.model.PropertyModel"},
+    {"name": "ch.qos.logback.core.model.DefineModel"},
+    {"name": "ch.qos.logback.core.model.TimestampModel"},
+    {"name": "ch.qos.logback.core.model.StatusListenerModel"},
+    {"name": "ch.qos.logback.core.model.EventEvaluatorModel"},
+    {"name": "ch.qos.logback.core.model.ConversionRuleModel"},
+    {"name": "ch.qos.logback.core.model.ParamModel"},
+    {"name": "ch.qos.logback.core.model.ResourceModel"},
+    {"name": "ch.qos.logback.core.model.SequenceNumberGeneratorModel"},
+    {"name": "ch.qos.logback.core.model.SerializeModelModel"},
+    {"name": "ch.qos.logback.core.model.ShutdownHookModel"},
+    {"name": "ch.qos.logback.core.model.SiftModel"},
+    {"name": "ch.qos.logback.core.model.InsertFromJNDIModel"},
+    {"name": "ch.qos.logback.core.model.conditional.IfModel"},
+    {"name": "ch.qos.logback.core.model.conditional.ThenModel"},
+    {"name": "ch.qos.logback.core.model.conditional.ElseModel"},
+    {"name": "ch.qos.logback.classic.model.ConfigurationModel"},
+    {"name": "ch.qos.logback.classic.model.LoggerModel"},
+    {"name": "ch.qos.logback.classic.model.RootLoggerModel"},
+    {"name": "ch.qos.logback.classic.model.LevelModel"},
+    {"name": "ch.qos.logback.classic.model.ContextNameModel"},
+    {"name": "ch.qos.logback.classic.model.LoggerContextListenerModel"},
+    {"name": "ch.qos.logback.classic.model.PropertiesConfiguratorModel"},
+    {"name": "ch.qos.logback.classic.model.ReceiverModel"},
+    {"name": "org.springframework.boot.logging.logback.SpringProfileModel"},
+    {"name": "org.springframework.boot.logging.logback.SpringPropertyModel"},
+    {"name": "java.util.ArrayList"},
+    {"name": "java.lang.String"},
+    {"name": "java.lang.Boolean"},
+    {"name": "java.lang.Integer"},
+    {"name": "java.lang.Number"},
+    {"name": "java.lang.Enum"},
+    {"name": "java.util.HashMap"},
+    {"name": "java.util.LinkedHashMap"},
+    {"name": "java.util.Collections$EmptyList"},
+    {"name": "java.util.Collections$EmptyMap"}
   ],
   "lambdaCapturingTypes": []
 }
