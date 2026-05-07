@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.petclinic.vet.repository.SpecialtyRepositoryTest
--------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.195 s -- in com.petclinic.vet.repository.SpecialtyRepositoryTest
