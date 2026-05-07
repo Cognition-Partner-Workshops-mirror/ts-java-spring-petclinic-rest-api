@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: vet-service
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: false
+
+server:
+  port: 9967
+  servlet:
+    context-path: /vet-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
