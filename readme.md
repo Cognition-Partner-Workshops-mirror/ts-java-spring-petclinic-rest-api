@@ -30,6 +30,40 @@ cd spring-petclinic-rest
 docker run -p 9966:9966 springcommunity/spring-petclinic-rest
 ```
 
+### With GraalVM Native Image
+
+Building a native image requires a [GraalVM JDK 25+](https://www.graalvm.org/downloads/) with the `native-image` tool.
+Spring Boot 4.x mandates Java 25+ for native image AOT support.
+
+#### Prerequisites
+- GraalVM JDK 25 or later (includes `native-image` out of the box)
+- A C compiler toolchain (GCC or Clang) — typically pre-installed on Linux
+
+#### Build and run a native binary
+```sh
+# Compile the application into a native executable (skipping tests)
+./mvnw -Pnative native:compile -DskipTests
+
+# Run the native binary
+./target/spring-petclinic-rest
+```
+
+#### Build a native Docker image
+```sh
+docker build -f Dockerfile.native -t petclinic-native .
+docker run -p 9966:9966 petclinic-native
+```
+
+#### Run tests as a native image
+```sh
+./mvnw -Pnative test
+```
+
+> **Note:** Spring profiles are fixed at build time for native images. The default
+> profile (`h2,spring-data-jpa`) is baked into the binary from `application.properties`.
+> To use a different database profile you must rebuild the native image with
+> `-Dspring.profiles.active=<desired-profiles>`.
+
 You can then access petclinic here: [http://localhost:9966/petclinic/](http://localhost:9966/petclinic/)
 
 There is an actuator health check route as well:

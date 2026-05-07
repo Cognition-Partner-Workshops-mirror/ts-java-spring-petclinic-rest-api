@@ -470,4 +470,122 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- GraalVM Native Image profile for ahead-of-time compilation -->
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <executions>
+                            <!-- Compile the application into a native binary -->
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <!-- Run tests as a native image -->
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- Additional native-image build arguments -->
+                            <buildArgs>
+                                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                    <!--
+                        Fix reachability-metadata.json for GraalVM 24 compatibility.
+                        Spring Framework 7.x AOT generates:
+                          1) bundle entries inside the resources array, but GraalVM 23+
+                             expects them in a separate top-level bundles section.
+                          2) "serializable": true in reflection entries, but GraalVM 24
+                             ignores this attribute and requires a separate
+                             serialization-config.json instead.
+                        This step runs after AOT processing (process-aot phase) but
+                        before native compilation (package phase).
+                    -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>fix-native-metadata</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>python3</executable>
+                                    <arguments>
+                                        <argument>-c</argument>
+                                        <argument>
+import json, os, glob
+
+for f in glob.glob('target/classes/META-INF/native-image/**/reachability-metadata.json', recursive=True):
+    with open(f) as fh:
+        data = json.load(fh)
+    changed = False
+
+    # Fix 1: Move bundle entries from resources to top-level bundles key
+    resources = data.get('resources', [])
+    bundles = [e for e in resources if 'bundle' in e and 'glob' not in e]
+    if bundles:
+        data['resources'] = [e for e in resources if not ('bundle' in e and 'glob' not in e)]
+        existing = data.get('bundles', [])
+        existing.extend([{'name': b['bundle']} for b in bundles])
+        data['bundles'] = existing
+        changed = True
+        print('Fixed %s: moved %d bundle entries' % (f, len(bundles)))
+
+    # Fix 2: Extract serializable reflection entries into serialization-config.json
+    reflection = data.get('reflection', [])
+    ser_types = [e for e in reflection if e.get('serializable')]
+    if ser_types:
+        cfg_dir = os.path.dirname(f)
+        ser_file = os.path.join(cfg_dir, 'serialization-config.json')
+        # Load existing serialization config if present
+        existing_ser = {'types': [], 'lambdaCapturingTypes': []}
+        if os.path.exists(ser_file):
+            with open(ser_file) as sh:
+                existing_ser = json.load(sh)
+        known = {t.get('name') for t in existing_ser.get('types', [])}
+        for e in ser_types:
+            t = e.get('type', e.get('name', ''))
+            if t and t not in known:
+                existing_ser['types'].append({'name': t})
+                known.add(t)
+        with open(ser_file, 'w') as sh:
+            json.dump(existing_ser, sh, indent=2)
+        # Remove serializable attribute from reflection entries (GraalVM 24 ignores it)
+        for e in reflection:
+            e.pop('serializable', None)
+        changed = True
+        print('Fixed %s: extracted %d serializable types to serialization-config.json' % (f, len(ser_types)))
+
+    if changed:
+        with open(f, 'w') as fh:
+            json.dump(data, fh, indent=2)
+                                        </argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

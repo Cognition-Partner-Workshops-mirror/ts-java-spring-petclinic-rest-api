@@ -1,0 +1,39 @@
+# Multi-stage Dockerfile for building a GraalVM native image of the Spring Petclinic REST API.
+# Stage 1 compiles the application into a native binary using GraalVM.
+# Stage 2 packages the binary into a minimal Debian runtime image.
+
+# --- Stage 1: Build the native binary with GraalVM ---
+# Spring Boot 4.x requires Java 25+ for native image AOT support
+FROM ghcr.io/graalvm/native-image-community:25 AS builder
+
+WORKDIR /build
+
+# Copy Maven wrapper and POM first for dependency caching
+COPY .mvn/ .mvn/
+COPY mvnw pom.xml ./
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
+
+# Copy source code and build the native image
+COPY src/ src/
+# Spring profiles are fixed at build time for native images;
+# defaults to h2 + spring-data-jpa as configured in application.properties
+RUN ./mvnw -Pnative native:compile -DskipTests -B
+
+# --- Stage 2: Minimal runtime image ---
+FROM debian:bookworm-slim
+
+# Install minimal runtime dependencies for the native binary
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libfreetype6 libstdc++6 zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy the native binary from the builder stage
+COPY --from=builder /build/target/spring-petclinic-rest /app/spring-petclinic-rest
+
+# Expose the application port
+EXPOSE 9966
+
+# Run the native binary
+ENTRYPOINT ["/app/spring-petclinic-rest"]
