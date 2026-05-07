@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vet-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-vetdb}
+      POSTGRES_USER: ${POSTGRES_USER:-vetuser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vetuser} -d ${POSTGRES_DB:-vetdb}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  vet-service:
+    build: .
+    container_name: vet-service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-vetdb}
+      DATABASE_USERNAME: ${POSTGRES_USER:-vetuser}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8083:8083"
+
+volumes:
+  pgdata:
