@@ -24,3 +24,4 @@ springboot-petclinic-server/
 
 # newman reports
 ./src/test/postman/reports/
+vet-service/target/
