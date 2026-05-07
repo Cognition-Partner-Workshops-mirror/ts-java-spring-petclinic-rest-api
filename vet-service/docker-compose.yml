@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  vet-service:
+    build: .
+    container_name: vet-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_HOST: postgres
+      DB_USERNAME: vetuser
+      DB_PASSWORD: vetpass
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - vet-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: vet-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: vetdb
+      POSTGRES_USER: vetuser
+      POSTGRES_PASSWORD: vetpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vetuser -d vetdb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - vet-net
+
+volumes:
+  pgdata:
+
+networks:
+  vet-net:
+    driver: bridge
