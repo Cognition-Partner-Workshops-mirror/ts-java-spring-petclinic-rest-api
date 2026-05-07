@@ -1,0 +1,50 @@
+# =============================================================================
+# Spring Boot 4 Application Configuration
+# =============================================================================
+
+# Server configuration
+server:
+  port: 8080
+
+# Application metadata used by InfoService
+app:
+  name: springboot-health-info-app
+  version: 0.0.1-SNAPSHOT
+  description: Simple Spring Boot 4 application with Health and Info endpoints
+
+# Spring configuration
+spring:
+  application:
+    name: springboot-health-info-app
+
+  # MongoDB connection settings
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: healthinfodb
+      # Uncomment and set credentials if MongoDB authentication is enabled
+      # username: admin
+      # password: secret
+      # authentication-database: admin
+      # Full URI alternative (overrides host/port/database above):
+      # uri: mongodb://admin:secret@localhost:27017/healthinfodb?authSource=admin
+
+# Spring Boot Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        # Expose health and info actuator endpoints
+        include: health,info
+  endpoint:
+    health:
+      # Show full health details including MongoDB connectivity
+      show-details: always
+
+# Logging configuration
+logging:
+  level:
+    root: INFO
+    com.example.healthinfo: DEBUG
+    org.springframework.data.mongodb: DEBUG
