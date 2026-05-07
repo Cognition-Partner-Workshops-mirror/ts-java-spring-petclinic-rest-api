@@ -470,4 +470,87 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- GraalVM Native Image profile for ahead-of-time compilation -->
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <executions>
+                            <!-- Compile the application into a native binary -->
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <!-- Run tests as a native image -->
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- Additional native-image build arguments -->
+                            <buildArgs>
+                                <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                    <!--
+                        Fix reachability-metadata.json for GraalVM compatibility.
+                        Spring Framework 7.x AOT generates bundle entries inside the
+                        resources array, but GraalVM 23+ expects them in a separate
+                        bundles section. This step runs after AOT processing (which
+                        happens during process-aot phase) but before native compilation
+                        (which happens during package phase).
+                    -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>fix-native-metadata</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>python3</executable>
+                                    <arguments>
+                                        <argument>-c</argument>
+                                        <argument>
+import json, os, glob
+for f in glob.glob('target/classes/META-INF/native-image/**/reachability-metadata.json', recursive=True):
+    with open(f) as fh:
+        data = json.load(fh)
+    resources = data.get('resources', [])
+    bundles = [e for e in resources if 'bundle' in e and 'glob' not in e]
+    if bundles:
+        data['resources'] = [e for e in resources if not ('bundle' in e and 'glob' not in e)]
+        existing = data.get('bundles', [])
+        existing.extend([{'name': b['bundle']} for b in bundles])
+        data['bundles'] = existing
+        with open(f, 'w') as fh:
+            json.dump(data, fh, indent=2)
+        print('Fixed reachability-metadata.json: moved %d bundle entries' % len(bundles))
+                                        </argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
