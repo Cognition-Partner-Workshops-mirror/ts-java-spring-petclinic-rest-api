@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  vet-service:
+    build: .
+    container_name: vet-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8083/vet-service/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  vet-service-prod:
+    build: .
+    container_name: vet-service-prod
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_USERNAME: ${DB_USERNAME:-vet_user}
+      DB_PASSWORD: ${DB_PASSWORD:-vet_pass}
+    depends_on:
+      vet-db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8083/vet-service/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  vet-db:
+    image: postgres:16-alpine
+    container_name: vet-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: vetdb
+      POSTGRES_USER: ${DB_USERNAME:-vet_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_pass}
+    volumes:
+      - vet-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-vet_user} -d vetdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    profiles:
+      - prod
+
+volumes:
+  vet-db-data:
