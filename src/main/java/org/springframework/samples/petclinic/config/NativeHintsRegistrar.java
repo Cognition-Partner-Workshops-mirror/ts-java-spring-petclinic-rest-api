@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.config;
 import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 
@@ -28,6 +29,10 @@ import org.springframework.samples.petclinic.rest.controller.BindingErrorsRespon
  * Registers GraalVM native-image hints so that classes requiring reflective
  * access (JPA entities, JDBC row mappers, Jackson-serialised DTOs, etc.) are
  * reachable at run time in the ahead-of-time compiled binary.
+ *
+ * Also registers serialization hints for Logback model classes, which Spring
+ * Boot AOT pre-serializes at build time and deserializes at native runtime
+ * for faster logging initialization.
  */
 @Configuration
 @ImportRuntimeHints(NativeHintsRegistrar.class)
@@ -40,6 +45,52 @@ public class NativeHintsRegistrar implements RuntimeHintsRegistrar {
 		MemberCategory.INVOKE_DECLARED_METHODS,
 		MemberCategory.INVOKE_PUBLIC_CONSTRUCTORS,
 		MemberCategory.INVOKE_PUBLIC_METHODS
+	};
+
+	// Logback model classes whose instances are Java-serialized by Spring Boot
+	// AOT at build time and deserialized at native-image runtime. Without these
+	// hints GraalVM 24+ throws MissingReflectionRegistrationError for
+	// serialVersionUID field access during ObjectInputStream deserialization.
+	private static final String[] LOGBACK_MODEL_CLASSES = {
+		// logback-core model hierarchy
+		"ch.qos.logback.core.model.Model",
+		"ch.qos.logback.core.model.ComponentModel",
+		"ch.qos.logback.core.model.NamedComponentModel",
+		"ch.qos.logback.core.model.NamedModel",
+		"ch.qos.logback.core.model.AppenderModel",
+		"ch.qos.logback.core.model.AppenderRefModel",
+		"ch.qos.logback.core.model.ImplicitModel",
+		"ch.qos.logback.core.model.ImportModel",
+		"ch.qos.logback.core.model.IncludeModel",
+		"ch.qos.logback.core.model.PropertyModel",
+		"ch.qos.logback.core.model.DefineModel",
+		"ch.qos.logback.core.model.TimestampModel",
+		"ch.qos.logback.core.model.StatusListenerModel",
+		"ch.qos.logback.core.model.EventEvaluatorModel",
+		"ch.qos.logback.core.model.ConversionRuleModel",
+		"ch.qos.logback.core.model.ParamModel",
+		"ch.qos.logback.core.model.ResourceModel",
+		"ch.qos.logback.core.model.SequenceNumberGeneratorModel",
+		"ch.qos.logback.core.model.SerializeModelModel",
+		"ch.qos.logback.core.model.ShutdownHookModel",
+		"ch.qos.logback.core.model.SiftModel",
+		"ch.qos.logback.core.model.InsertFromJNDIModel",
+		// logback-core conditional models
+		"ch.qos.logback.core.model.conditional.IfModel",
+		"ch.qos.logback.core.model.conditional.ThenModel",
+		"ch.qos.logback.core.model.conditional.ElseModel",
+		// logback-classic model hierarchy
+		"ch.qos.logback.classic.model.ConfigurationModel",
+		"ch.qos.logback.classic.model.LoggerModel",
+		"ch.qos.logback.classic.model.RootLoggerModel",
+		"ch.qos.logback.classic.model.LevelModel",
+		"ch.qos.logback.classic.model.ContextNameModel",
+		"ch.qos.logback.classic.model.LoggerContextListenerModel",
+		"ch.qos.logback.classic.model.PropertiesConfiguratorModel",
+		"ch.qos.logback.classic.model.ReceiverModel",
+		// Spring Boot logback extensions
+		"org.springframework.boot.logging.logback.SpringProfileModel",
+		"org.springframework.boot.logging.logback.SpringPropertyModel"
 	};
 
 	@Override
@@ -70,6 +121,15 @@ public class NativeHintsRegistrar implements RuntimeHintsRegistrar {
 		registerReflection(hints,
 			BindingErrorsResponse.class
 		);
+
+		// --- Logback model serialization for Spring Boot AOT logging config ---
+		// Register each logback model class for both Java serialization and
+		// reflection (DECLARED_FIELDS needed for serialVersionUID access).
+		for (String className : LOGBACK_MODEL_CLASSES) {
+			TypeReference typeRef = TypeReference.of(className);
+			hints.serialization().registerType(typeRef);
+			hints.reflection().registerType(typeRef, MemberCategory.DECLARED_FIELDS);
+		}
 
 		// --- Resource bundles and classpath resources ---
 		hints.resources().registerPattern("db/*/*.sql");
