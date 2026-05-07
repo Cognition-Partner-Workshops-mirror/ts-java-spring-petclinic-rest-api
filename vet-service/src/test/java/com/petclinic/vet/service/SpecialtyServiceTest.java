@@ -3,9 +3,11 @@ package com.petclinic.vet.service;
 import com.petclinic.vet.dto.SpecialtyRequestDto;
 import com.petclinic.vet.dto.SpecialtyResponseDto;
 import com.petclinic.vet.entity.Specialty;
+import com.petclinic.vet.entity.Vet;
 import com.petclinic.vet.exception.ResourceNotFoundException;
 import com.petclinic.vet.mapper.SpecialtyMapper;
 import com.petclinic.vet.repository.SpecialtyRepository;
+import com.petclinic.vet.repository.VetRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -27,6 +31,9 @@ class SpecialtyServiceTest {
 
     @Mock
     private SpecialtyRepository specialtyRepository;
+
+    @Mock
+    private VetRepository vetRepository;
 
     @Mock
     private SpecialtyMapper specialtyMapper;
@@ -113,11 +120,30 @@ class SpecialtyServiceTest {
     @Test
     void deleteSpecialty_deletesAndReturns() {
         when(specialtyRepository.findById(1)).thenReturn(Optional.of(specialty));
+        when(vetRepository.findBySpecialtyId(1)).thenReturn(List.of());
         when(specialtyMapper.toResponseDto(specialty)).thenReturn(responseDto);
 
         SpecialtyResponseDto result = specialtyService.deleteSpecialty(1);
 
         assertThat(result.id()).isEqualTo(1);
+        verify(specialtyRepository).delete(specialty);
+    }
+
+    @Test
+    void deleteSpecialty_removesSpecialtyFromAssociatedVets() {
+        Vet vet = new Vet(1, "James", "Carter");
+        Set<Specialty> specialties = new HashSet<>();
+        specialties.add(specialty);
+        vet.setSpecialties(specialties);
+
+        when(specialtyRepository.findById(1)).thenReturn(Optional.of(specialty));
+        when(vetRepository.findBySpecialtyId(1)).thenReturn(List.of(vet));
+        when(specialtyMapper.toResponseDto(specialty)).thenReturn(responseDto);
+
+        specialtyService.deleteSpecialty(1);
+
+        assertThat(vet.getSpecialties()).doesNotContain(specialty);
+        verify(vetRepository).saveAll(List.of(vet));
         verify(specialtyRepository).delete(specialty);
     }
 
