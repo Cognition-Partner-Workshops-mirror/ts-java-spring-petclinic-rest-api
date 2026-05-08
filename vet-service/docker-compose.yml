@@ -1,0 +1,48 @@
+# Docker Compose for the Vet Service microservice
+# Runs the vet-service with a PostgreSQL database
+version: '3.8'
+
+services:
+  # PostgreSQL database for persistent storage
+  postgres:
+    image: postgres:16-alpine
+    container_name: vet-service-db
+    environment:
+      POSTGRES_DB: vetdb
+      POSTGRES_USER: vetservice
+      POSTGRES_PASSWORD: vetservice_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vetservice -d vetdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Vet Service Spring Boot microservice
+  vet-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vet-service-app
+    ports:
+      - "8083:8083"
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/vetdb
+      DATABASE_USERNAME: vetservice
+      DATABASE_PASSWORD: vetservice_secret
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8083/api/actuator/health"]
+      interval: 30s
+      timeout: 3s
+      start_period: 40s
+      retries: 3
+
+volumes:
+  pgdata:
+    driver: local
