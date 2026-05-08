@@ -1,0 +1,25 @@
+# Vet Service — shared configuration
+spring:
+  application:
+    name: vet-service
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8083
+  servlet:
+    context-path: /
+
+# Actuator health endpoint
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,0 +1,18 @@
+# Prod profile — expects external database configuration via environment variables
+# Override these via environment variables or a secrets manager:
+#   SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/vetdb}
+    username: ${SPRING_DATASOURCE_USERNAME:vetservice}
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    com.petclinic.vet: INFO
+    org.springframework.web: WARN
