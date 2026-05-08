@@ -42,6 +42,8 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration/h2
 
 ---
 # Test profile: H2 in-memory database for integration tests
@@ -58,6 +60,8 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration/h2
 
 ---
 # Prod profile: MySQL database with connection pooling

@@ -16,7 +16,3 @@ INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (3, 2);
 INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (3, 3);
 INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (4, 2);
 INSERT INTO vet_specialties (vet_id, specialty_id) VALUES (5, 1);
-
--- Reset auto-increment sequences past the seeded IDs
-ALTER TABLE specialties ALTER COLUMN id RESTART WITH 100;
-ALTER TABLE vets ALTER COLUMN id RESTART WITH 100;
