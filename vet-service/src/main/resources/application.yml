@@ -1,0 +1,82 @@
+# Common configuration shared across all profiles
+server:
+  port: 8083
+  servlet:
+    context-path: /vet-service/api
+
+spring:
+  application:
+    name: vet-service
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# Actuator endpoints for health checks and monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+
+---
+# Dev profile: H2 in-memory database with console access
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: jdbc:h2:mem:vetdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration/h2
+
+---
+# Test profile: H2 in-memory database for integration tests
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:vetdb-test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    locations: classpath:db/migration,classpath:db/migration/h2
+
+---
+# Prod profile: MySQL database with connection pooling
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:mysql://localhost:3306/vetdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    locations: classpath:db/migration
