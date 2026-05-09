@@ -1,0 +1,21 @@
+-- V2: Add appointments table for scheduling pet visits with veterinarians
+CREATE TABLE appointments (
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    pet_name         VARCHAR(100) NOT NULL,
+    pet_owner_name   VARCHAR(100) NOT NULL,
+    vet_id           INT NOT NULL,
+    specialty_id     INT,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    reason           VARCHAR(500) NOT NULL,
+    status           VARCHAR(20) NOT NULL DEFAULT 'SCHEDULED',
+    created_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_appointments_vet FOREIGN KEY (vet_id) REFERENCES vets (id),
+    CONSTRAINT fk_appointments_specialty FOREIGN KEY (specialty_id) REFERENCES specialties (id)
+);
+
+-- Index for common query patterns
+CREATE INDEX idx_appointments_vet_id ON appointments (vet_id);
+CREATE INDEX idx_appointments_date ON appointments (appointment_date);
+CREATE INDEX idx_appointments_status ON appointments (status);
