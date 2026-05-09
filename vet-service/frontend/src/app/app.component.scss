@@ -1,0 +1,37 @@
+/* Root app component styles */
+
+/* Toolbar navigation styling */
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.app-logo {
+  margin-right: 8px;
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.app-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Flex spacer pushes nav buttons to the right */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Highlight active navigation link */
+.active-link {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+/* Main content area below toolbar */
+.app-content {
+  min-height: calc(100vh - 64px);
+  background-color: #fafafa;
+}

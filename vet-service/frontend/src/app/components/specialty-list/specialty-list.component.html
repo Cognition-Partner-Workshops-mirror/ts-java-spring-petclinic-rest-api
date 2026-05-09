@@ -1,0 +1,37 @@
+<!-- Specialties list view with Material table -->
+<div class="specialty-list-container">
+  <div class="header-row">
+    <h1>Specialties</h1>
+  </div>
+
+  <!-- Loading spinner -->
+  <div class="spinner-container" *ngIf="loading">
+    <mat-spinner diameter="48"></mat-spinner>
+  </div>
+
+  <!-- Specialty table -->
+  <mat-card *ngIf="!loading">
+    <table mat-table [dataSource]="specialties" class="full-width-table">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let spec">{{ spec.id }}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Specialty Name</th>
+        <td mat-cell *matCellDef="let spec">{{ spec.name }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="specialties.length === 0">
+      <mat-icon>local_hospital</mat-icon>
+      <p>No specialties found.</p>
+    </div>
+  </mat-card>
+</div>

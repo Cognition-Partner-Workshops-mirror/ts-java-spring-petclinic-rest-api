@@ -1,0 +1,23 @@
+/* Global styles for the PetClinic Vet Appointments application */
+
+/* Angular Material Indigo-Pink theme */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+/* Reset and base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #fafafa;
+}
+
+/* Utility: full-width elements */
+.full-width {
+  width: 100%;
+}
+
+/* Common heading styles */
+h1 {
+  color: #333;
+  font-weight: 400;
+}
