@@ -61,7 +61,7 @@ export class AppointmentFormComponent implements OnInit {
     this.submitting = true;
     const formValue = this.appointmentForm.value;
 
-    // Format date to ISO string (yyyy-MM-dd) for the backend
+    // Format date using local timezone to avoid UTC shift (e.g. UTC+9 would yield previous day)
     const dateObj: Date = formValue.appointmentDate;
     const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
