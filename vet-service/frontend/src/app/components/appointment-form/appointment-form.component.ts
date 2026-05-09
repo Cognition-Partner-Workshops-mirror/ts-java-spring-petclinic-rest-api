@@ -63,7 +63,7 @@ export class AppointmentFormComponent implements OnInit {
 
     // Format date to ISO string (yyyy-MM-dd) for the backend
     const dateObj: Date = formValue.appointmentDate;
-    const formattedDate = dateObj.toISOString().split('T')[0];
+    const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
 
     const request: AppointmentRequest = {
       petName: formValue.petName,
