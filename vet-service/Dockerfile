@@ -1,4 +1,7 @@
-FROM eclipse-temurin:17-jre-alpine
+# Dockerfile for the Vet microservice.
+# Build the JAR first: mvn clean package -DskipTests
+# Then build the image: docker build -t vet-service .
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 

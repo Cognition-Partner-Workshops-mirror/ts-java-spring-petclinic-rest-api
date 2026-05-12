@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>4.0.6</version>
         <relativePath/>
     </parent>
 
@@ -20,7 +20,7 @@
     <properties>
         <java.version>17</java.version>
         <mapstruct.version>1.6.3</mapstruct.version>
-        <springdoc-openapi.version>2.8.6</springdoc-openapi.version>
+        <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
     </properties>
 
     <dependencies>
@@ -53,9 +53,10 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Flyway database migration (Spring Boot 4.x requires explicit starter) -->
         <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
@@ -69,7 +70,7 @@
             <version>${mapstruct.version}</version>
         </dependency>
 
-        <!-- OpenAPI / Swagger -->
+        <!-- OpenAPI / Swagger UI (springdoc-openapi 3.0.3, compatible with Spring Boot 4.x) -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
@@ -80,6 +81,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Spring Boot 4.x modularized test slices for @WebMvcTest -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Spring Boot 4.x modularized test slices for @DataJpaTest -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-data-jpa-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
