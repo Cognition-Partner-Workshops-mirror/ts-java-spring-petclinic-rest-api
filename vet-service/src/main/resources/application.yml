@@ -20,6 +20,16 @@ management:
       exposure:
         include: health,info,metrics
 
+# SpringDoc / Swagger UI configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    try-it-out-enabled: true
+
 # Server configuration
 server:
   port: 8080

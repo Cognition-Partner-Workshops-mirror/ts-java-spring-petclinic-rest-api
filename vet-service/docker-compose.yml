@@ -1,0 +1,82 @@
+# Docker Compose for the Vet microservice
+# Starts the vet-service with an H2 in-memory database (dev profile)
+# and optionally a MySQL instance for production-like testing.
+#
+# Usage:
+#   Dev (H2 only):      docker compose up vet-service
+#   With MySQL:          docker compose --profile mysql up
+#   Swagger UI:          http://localhost:8080/swagger-ui.html
+#   API docs (JSON):     http://localhost:8080/v3/api-docs
+
+services:
+  # Vet microservice — standalone Spring Boot app
+  vet-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vet-service
+    ports:
+      - "8080:8080"
+    environment:
+      # Default: dev profile with H2 in-memory database
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # Optional MySQL database for production-like testing
+  vet-mysql:
+    image: mysql:8.4
+    container_name: vet-mysql
+    profiles:
+      - mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vetdb
+      MYSQL_USER: vet
+      MYSQL_PASSWORD: vet
+    volumes:
+      - vet-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # Vet service connected to MySQL (activate with --profile mysql)
+  vet-service-mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vet-service-mysql
+    profiles:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DB_URL: jdbc:mysql://vet-mysql:3306/vetdb?useSSL=false&allowPublicKeyRetrieval=true
+      DB_DRIVER: com.mysql.cj.jdbc.Driver
+      DB_USERNAME: vet
+      DB_PASSWORD: vet
+    depends_on:
+      vet-mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  vet-mysql-data:
+    driver: local

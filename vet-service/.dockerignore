@@ -1,0 +1,9 @@
+# Ignore build artifacts and IDE files to keep Docker context small
+target/
+.idea/
+*.iml
+.mvn/
+.git/
+*.md
+docker-compose.yml
+.dockerignore
