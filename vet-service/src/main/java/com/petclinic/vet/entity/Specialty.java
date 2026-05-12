@@ -26,8 +26,8 @@ public class Specialty {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // The specialty name, max 80 characters per OpenAPI spec
-    @Column(nullable = false, length = 80)
+    // The specialty name, max 80 characters per OpenAPI spec; unique to prevent duplicates
+    @Column(nullable = false, length = 80, unique = true)
     private String name;
 
     // Audit field: automatically set on entity creation
