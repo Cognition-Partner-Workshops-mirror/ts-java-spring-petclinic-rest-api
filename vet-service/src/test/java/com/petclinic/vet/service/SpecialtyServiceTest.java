@@ -138,6 +138,7 @@ class SpecialtyServiceTest {
         SpecialtyResponseDto expectedDto = new SpecialtyResponseDto(1, "updated-radiology");
 
         when(specialtyRepository.findById(1)).thenReturn(Optional.of(radiology));
+        when(specialtyRepository.existsByNameIgnoreCase("updated-radiology")).thenReturn(false);
         when(specialtyRepository.save(radiology)).thenReturn(radiology);
         when(specialtyMapper.toResponseDto(radiology)).thenReturn(expectedDto);
 
@@ -145,6 +146,36 @@ class SpecialtyServiceTest {
 
         assertThat(result.getName()).isEqualTo("updated-radiology");
         verify(specialtyMapper).updateEntityFromDto(request, radiology);
+    }
+
+    @Test
+    @DisplayName("updateSpecialty allows updating with the same name (no false duplicate)")
+    void updateSpecialty_sameName() {
+        SpecialtyRequestDto request = new SpecialtyRequestDto("radiology");
+        SpecialtyResponseDto expectedDto = new SpecialtyResponseDto(1, "radiology");
+
+        when(specialtyRepository.findById(1)).thenReturn(Optional.of(radiology));
+        when(specialtyRepository.save(radiology)).thenReturn(radiology);
+        when(specialtyMapper.toResponseDto(radiology)).thenReturn(expectedDto);
+
+        SpecialtyResponseDto result = specialtyService.updateSpecialty(1, request);
+
+        assertThat(result.getName()).isEqualTo("radiology");
+    }
+
+    @Test
+    @DisplayName("updateSpecialty throws DuplicateResourceException when renaming to existing name")
+    void updateSpecialty_duplicateName() {
+        SpecialtyRequestDto request = new SpecialtyRequestDto("surgery");
+
+        when(specialtyRepository.findById(1)).thenReturn(Optional.of(radiology));
+        when(specialtyRepository.existsByNameIgnoreCase("surgery")).thenReturn(true);
+
+        assertThatThrownBy(() -> specialtyService.updateSpecialty(1, request))
+            .isInstanceOf(DuplicateResourceException.class)
+            .hasMessageContaining("already exists");
+
+        verify(specialtyRepository, never()).save(any());
     }
 
     @Test

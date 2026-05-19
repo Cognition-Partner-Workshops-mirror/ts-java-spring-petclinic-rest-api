@@ -62,6 +62,12 @@ public class SpecialtyServiceImpl implements SpecialtyService {
     public SpecialtyResponseDto updateSpecialty(Integer id, SpecialtyRequestDto request) {
         Specialty existing = specialtyRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Specialty", id));
+        // Enforce name uniqueness on update (excluding the current specialty)
+        if (!existing.getName().equalsIgnoreCase(request.getName())
+                && specialtyRepository.existsByNameIgnoreCase(request.getName())) {
+            throw new DuplicateResourceException(
+                "Specialty with name '" + request.getName() + "' already exists");
+        }
         specialtyMapper.updateEntityFromDto(request, existing);
         Specialty saved = specialtyRepository.save(existing);
         return specialtyMapper.toResponseDto(saved);

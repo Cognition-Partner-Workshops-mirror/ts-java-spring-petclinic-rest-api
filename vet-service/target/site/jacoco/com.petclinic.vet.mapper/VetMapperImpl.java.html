@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VetMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">vet-service</a> &gt; <a href="index.source.html" class="el_package">com.petclinic.vet.mapper</a> &gt; <span class="el_source">VetMapperImpl.java</span></div><h1>VetMapperImpl.java</h1><pre class="source lang-java linenums">package com.petclinic.vet.mapper;
+
+import com.petclinic.vet.dto.SpecialtyResponseDto;
+import com.petclinic.vet.dto.VetResponseDto;
+import com.petclinic.vet.entity.Specialty;
+import com.petclinic.vet.entity.Vet;
+import javax.annotation.processing.Generated;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;,
+    date = &quot;2026-05-19T08:49:05+0000&quot;,
+    comments = &quot;version: 1.5.5.Final, compiler: javac, environment: Java 17.0.13 (Ubuntu)&quot;
+)
+@Component
+<span class="fc" id="L16">public class VetMapperImpl implements VetMapper {</span>
+
+    @Override
+    public VetResponseDto toResponseDto(Vet vet) {
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if ( vet == null ) {</span>
+<span class="nc" id="L21">            return null;</span>
+        }
+
+<span class="nc" id="L24">        VetResponseDto vetResponseDto = new VetResponseDto();</span>
+
+<span class="nc" id="L26">        vetResponseDto.setId( vet.getId() );</span>
+<span class="nc" id="L27">        vetResponseDto.setFirstName( vet.getFirstName() );</span>
+<span class="nc" id="L28">        vetResponseDto.setLastName( vet.getLastName() );</span>
+
+<span class="nc" id="L30">        vetResponseDto.setSpecialties( mapSpecialties(vet.getSpecialties()) );</span>
+
+<span class="nc" id="L32">        return vetResponseDto;</span>
+    }
+
+    @Override
+    public SpecialtyResponseDto specialtyToDto(Specialty specialty) {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if ( specialty == null ) {</span>
+<span class="nc" id="L38">            return null;</span>
+        }
+
+<span class="nc" id="L41">        SpecialtyResponseDto specialtyResponseDto = new SpecialtyResponseDto();</span>
+
+<span class="nc" id="L43">        specialtyResponseDto.setId( specialty.getId() );</span>
+<span class="nc" id="L44">        specialtyResponseDto.setName( specialty.getName() );</span>
+
+<span class="nc" id="L46">        return specialtyResponseDto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

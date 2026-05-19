@@ -61,11 +61,11 @@ public class GlobalExceptionHandler {
         return problem;
     }
 
-    /** Handle all other uncaught exceptions (500) */
+    /** Handle all other uncaught exceptions (500) — returns a generic message to avoid leaking internals */
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGenericException(Exception ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-            HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+            HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
         problem.setTitle("Internal Server Error");
         problem.setType(URI.create("about:blank"));
         problem.setProperty("timestamp", Instant.now());

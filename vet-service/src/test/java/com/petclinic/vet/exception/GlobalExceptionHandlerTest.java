@@ -69,6 +69,6 @@ class GlobalExceptionHandlerTest {
 
         assertThat(result.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
         assertThat(result.getTitle()).isEqualTo("Internal Server Error");
-        assertThat(result.getDetail()).isEqualTo("Unexpected error");
+        assertThat(result.getDetail()).isEqualTo("An unexpected error occurred");
     }
 }
