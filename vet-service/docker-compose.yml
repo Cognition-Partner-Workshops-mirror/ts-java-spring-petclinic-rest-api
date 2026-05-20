@@ -1,0 +1,22 @@
+# Docker Compose for the Vet microservice
+# Usage: docker compose up --build
+version: "3.9"
+
+services:
+  # Vet microservice running with H2 in-memory database (dev profile)
+  vet-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vet-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/v3/api-docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped

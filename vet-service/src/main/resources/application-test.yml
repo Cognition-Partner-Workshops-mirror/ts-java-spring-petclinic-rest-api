@@ -1,0 +1,17 @@
+# Test profile: H2 in-memory database, Hibernate-managed schema, no seed data
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    com.petclinic.vet: WARN
