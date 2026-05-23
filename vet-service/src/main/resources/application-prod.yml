@@ -1,0 +1,11 @@
+# Production profile with PostgreSQL placeholder configuration
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vetdb
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:vetservice}
+    password: ${DB_PASSWORD:vetservice}
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
