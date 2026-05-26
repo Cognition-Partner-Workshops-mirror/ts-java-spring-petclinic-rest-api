@@ -1,0 +1,38 @@
+package com.petclinic.vet.dto;
+
+/**
+ * Outbound DTO for specialty responses.
+ * Matches the OpenAPI Specialty schema with id and name fields.
+ */
+public class SpecialtyResponseDto {
+
+    /** Read-only identifier assigned by the database. */
+    private Integer id;
+
+    /** The display name of the specialty. */
+    private String name;
+
+    public SpecialtyResponseDto() {
+    }
+
+    public SpecialtyResponseDto(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
