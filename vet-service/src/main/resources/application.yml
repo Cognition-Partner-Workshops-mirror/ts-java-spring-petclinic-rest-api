@@ -1,0 +1,29 @@
+# ============================================================
+# Vet Microservice - shared configuration
+# Profile-specific overrides live in application-{profile}.yml
+# ============================================================
+spring:
+  application:
+    name: vet-service
+
+  # JPA defaults (overridden per profile as needed)
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Flyway database migration settings
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+# Actuator health endpoint exposed for readiness probes
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+server:
+  port: 8080

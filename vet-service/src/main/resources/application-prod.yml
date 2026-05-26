@@ -1,0 +1,22 @@
+# ============================================================
+# Prod profile - expects external datasource configured via env vars
+# Environment variables: DB_URL, DB_USERNAME, DB_PASSWORD
+# ============================================================
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+  flyway:
+    locations: classpath:db/migration
+
+logging:
+  level:
+    com.petclinic.vet: INFO
+    org.springframework.web: WARN
